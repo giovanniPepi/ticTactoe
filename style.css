@@ -31,11 +31,18 @@ img:hover {
 .header {
     height: 10vh;
 }
-.gameboard {
-    height: 79vh;
+.gameboardContainer {
+    flex: 1;
+    padding: 5rem;
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 }
+
 .footer {
     height: 10vh;
 }
+
+
 
 
