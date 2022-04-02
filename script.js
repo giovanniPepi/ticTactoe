@@ -1,3 +1,4 @@
+// handles DOM manipulation
 const dQuery = (function(){
     const gameboardContainer = document.querySelector(".gameboardContainer");
     
@@ -8,25 +9,19 @@ const dQuery = (function(){
             gameUnit.textContent="fuck";
             gameboardContainer.appendChild(gameUnit);
         };
-
-        // loops to create the game board;
-        for (let i = 1; i < 4; i++){
-            let gameUnit = document.createElement("div");
-            gameUnit.style.gridArea= `1/${i}`;
-            styleSetter(gameUnit);
-        
-        };        
-        for (let i = 1; i < 4; i++){
-            let gameUnit = document.createElement("div");
-            gameUnit.style.gridArea= `2/${i}`;
-            styleSetter(gameUnit);
-        };        
-        for (let i = 1; i < 4; i++){
-            let gameUnit = document.createElement("div");
-            gameUnit.style.gridArea= `3/${i}`;
-            styleSetter(gameUnit);
-        };        
-    }
+        // loops to create the game board;                
+        gridCreator = (a) => {
+            for (let i = 0; i < 3; i++){
+                let gameUnit = document.createElement("div");
+                gameUnit.style.gridArea= `${a}/${i+1}`;
+                styleSetter(gameUnit);
+            };
+        }
+        //calls gridcreator 3x
+        for (let i=0; i<3; i++){
+            gridCreator(i+1);
+        };
+    };
 
 })();
 
