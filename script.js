@@ -1,13 +1,13 @@
 main = (() => {
     // handles DOM manipulation
     dQuery = (function(){
-        const gameboardContainer = document.querySelector(".gameboardContainer");
+        const gameboard = document.querySelector(".gameboard");
         getGrid = () => {
             // sets CSS style for each square
             styleSetter = (gameUnit) => {
                 gameUnit.setAttribute("class", "gameUnit");
-                gameUnit.textContent="fuck";
-                gameboardContainer.appendChild(gameUnit);
+                gameUnit.textContent="";
+                gameboard.appendChild(gameUnit);
             };
             // loops to create the game board;                
             gridCreator = (a) => {
@@ -23,7 +23,7 @@ main = (() => {
             };
         };
     return {
-        gameboardContainer,
+        gameboard,
     }
 })();
 

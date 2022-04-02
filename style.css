@@ -29,18 +29,25 @@ img:hover {
     flex-direction: column;
 }
 .header {
-    height: 10vh;
+    height: 5vh;
 }
 .gameboardContainer {
-    flex: 1;
-    padding: 5rem;
-    display:grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    padding: var(--gamePadding);
+    display:flex;
 }
-
+.gameboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3,);
+    padding: clamp(.5rem, 3vw, 5rem);
+}
 .footer {
-    height: 10vh;
+    height: 5vh;
+}
+.gameUnit {
+    background: var(--board);
+    height: 5rem;
+    width: 5rem;
 }
 
 
