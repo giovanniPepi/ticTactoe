@@ -63,13 +63,15 @@ img:hover {
 .gameUnit {
     transition: all 0.01s ease-in-out;  
 }
+#gameUnitX, #gameUnitO {
+    animation: fadeInAnimation ease .3s;
+    animation-fill-mode: both;
+}
 #gameUnitX {
     color: var(--XColor);
 }
 #gameUnitO {
     color: var(--OColor);
-    animation: fadeInAnimation ease .3s;
-    animation-fill-mode: both;
 }
 /* animations */
 @keyframes fadeInAnimation {
