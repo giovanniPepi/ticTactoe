@@ -12,10 +12,10 @@ body * {
     font-size: calc(.5vw + 1.5vh + 10px);
     --fontSmall: calc(.5vw + 1.5vh + 8px);
     --fontBig: calc(.5vw + 1.5vh + 15px);
+    --unitSize: clamp(4rem, 19vw, 150px);
 }
 body {
     margin: 0;
-    height: 100vh;
 }   
 img { 
     width: 5%;
@@ -27,27 +27,30 @@ img:hover {
 .container { 
     display: flex;
     flex-direction: column;
+    height: 100vh;
 }
 .header {
-    height: 5vh;
+    height: 15vh;
 }
 .gameboardContainer {
     padding: var(--gamePadding);
     display:flex;
+    justify-content: center;
 }
 .gameboard {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3,);
-    padding: clamp(.5rem, 3vw, 5rem);
+    grid-template-rows: repeat(3, 1fr);
+    padding: 1rem;
 }
 .footer {
-    height: 5vh;
+    /* fill remaining space */
+    flex: 1 0 auto;
 }
 .gameUnit {
     background: var(--board);
-    height: 5rem;
-    width: 5rem;
+    height: var(--unitSize);
+    width: var(--unitSize);
 }
 
 
