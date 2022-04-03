@@ -47,7 +47,7 @@ img:hover {
     /* fill remaining space */
     flex: 1 0 auto;
 }
-.gameUnit {
+.gameUnit, .gameUnitX, .gameUnitO {
     background: var(--board);
     height: var(--unitSize);
     width: var(--unitSize);
@@ -55,6 +55,12 @@ img:hover {
     align-items: center;
     justify-content: center;
     font-size: 5rem;
+}
+.gameUnitX {
+    color: var(--XColor)
+}
+.gameUnitO {
+    color: var(--OColor)
 }
 
 
