@@ -1,28 +1,31 @@
     // handles DOM manipulation
     dQuery = (function(){
         const gameboard = document.querySelector(".gameboard");
+        const gameUnit = document.querySelectorAll(".gameUnit");
+
         // writes plays
         writeUnit = (element, arg) => {
             element.textContent = arg;
         };
 
         return {
-            gameboard, 
+            gameboard, gameUnit,
         }
     // imediatelly calls it before listeners
     })();
 
     const getListeners = (() => {
-        const gameUnit = document.querySelectorAll(".gameUnit");
+        let currentPlay = 'X';
 
-        gameUnit.forEach((unit) => 
-            unit.addEventListener("click", () => console.log('test'))
+        /*Listens for clicks, pass ID and calls write 
+        function for the element clicked */
+        dQuery.gameUnit.forEach((unit) => 
+            unit.addEventListener("click", () => {
+                console.log(unit.id);
+                writeUnit(unit, currentPlay);
+            })
         );
-
-    return {
-        gameUnit,
-    }
-    
+   
     })();
 
 
