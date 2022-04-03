@@ -1,13 +1,11 @@
-main = (() => {
     // handles DOM manipulation
     dQuery = (function(){
         const gameboard = document.querySelector(".gameboard");
-        const gameUnit = document.querySelectorAll(".gameUnit");
-
+        // writes plays
         writeUnit = (element, arg) => {
-            element.textContent=arg;
-        }
-        getGrid = () => {
+            element.textContent = arg;
+        };
+        getGrid = (function() {
             // loops to create the game board;                
             gridCreator = (a) => {
                 for (let i = 0; i < 3; i++){
@@ -19,7 +17,7 @@ main = (() => {
             // sets CSS style for each square
             styleSetter = (gameUnit) => {
                 gameUnit.setAttribute("class", "gameUnit");
-                writeUnit(gameUnit, '');
+                writeUnit(gameUnit, 'fuck');
                 gameboard.appendChild(gameUnit);
             };
             
@@ -27,13 +25,26 @@ main = (() => {
             for (let i=0; i<3; i++){
                 gridCreator(i+1);
             };
-        };
+        })();
+
+        return {
+            gameboard, writeUnit,
+        }
+    // imediatelly calls it before listeners
+    })();
+
+    const getListeners = (() => {
+        const gameUnit = document.querySelectorAll(".gameUnit");
+
+        gameUnit.forEach((unit) => 
+            unit.addEventListener("click", () => console.log('test'))
+        );
+
     return {
-        gameboard, gameUnit, writeUnit,
+        gameUnit,
     }
-})();
+    
+    })();
 
 
 //activating
-getGrid(); 
-})();
