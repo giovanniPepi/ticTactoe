@@ -99,7 +99,7 @@ const game = (function() {
   const _gameboard = new Array(9);
   let _whoPlaysNow = '';
   let myRandom = () => {
-    // *9 to avoid returning 9
+    // *9 to avoid returning position higher than 8
     return (Math.floor(Math.random()*9));
   }
 
@@ -145,6 +145,7 @@ const game = (function() {
 })();
 
 
+// simulating AI play to test the game
 simulateAIPlay = function() {
   console.log("antes da AI: ", game.getBoard());
   let AIturn = game.myRandom();
