@@ -4,6 +4,7 @@ const dQuery = (function(){
   const gameUnit = document.querySelectorAll(".gameUnit");
   const xSelector = document.querySelector("#X");
   const oSelector = document.querySelector("#O");
+  
 
   //sets the sign for each player
   xSelector.addEventListener("click", () => {
@@ -41,9 +42,20 @@ const dQuery = (function(){
       console.log(game.getBoard());
     })
   );
+
+  const updateBoard = () => {
+    console.log(game.getBoard());
+    gameArray = game.getBoard();
+    for (let i = 0; i < 9; i++){
+      let toWrite = document.querySelector(`[data-array="${i}"]`);
+      toWrite.firstChild.setAttribute("class", `gameUnit gameUnit${gameArray[i]}`);
+      toWrite.firstChild.textContent = gameArray[i];
+      console.log('tentei...');
+    }
+  }
   
   return {
-    gameUnitContainer, gameUnit,
+    gameUnitContainer, gameUnit, updateBoard,
   }
 })();
 
@@ -129,7 +141,8 @@ simulateAIPlay = function() {
   let AIturn = Math.floor(Math.random()*9);
   if(game.getUnit(AIturn) === undefined) {
     game.setUnit(AIturn, game.AIplayer.getSign());
-    console.log ('JOGUEEEEEEEEEI');
+    console.log ('JOGUEEEI');
+    dQuery.updateBoard();
   } else {
     simulateAIPlay();
   }
