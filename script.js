@@ -12,16 +12,16 @@ const dQuery = (function(){
     game.AIplayer.setSign(oSelector.textContent);
 
           //debugging
-    console.log('Human: ', game.humanPlayer.getSign());
-    console.log('PC: ', game.AIplayer.getSign());
+/*     console.log('Human: ', game.humanPlayer.getSign());
+    console.log('PC: ', game.AIplayer.getSign()); */
   });
   oSelector.addEventListener("click", () => {
     game.humanPlayer.setSign(oSelector.textContent);
     game.AIplayer.setSign(xSelector.textContent);
 
           //debugging
-    console.log('Human: ', game.humanPlayer.getSign());
-    console.log('PC: ', game.AIplayer.getSign());
+/*     console.log('Human: ', game.humanPlayer.getSign());
+    console.log('PC: ', game.AIplayer.getSign()); */
   })
 
   //listen for clicks on the gameboard array and sets the sign/CSS on them
@@ -37,9 +37,16 @@ const dQuery = (function(){
       game.setUnit((unit.dataset.array), game.humanPlayer.getSign());
       unit.firstChild.textContent = game.humanPlayer.getSign();
       unit.firstChild.setAttribute("class", `gameUnit gameUnit${game.humanPlayer.getSign()}`);
-      game.humanPlayer.setPlayStatus('false');
-        //debugging
-      console.log(game.getBoard());
+      game.humanPlayer.setPlayStatus(false);
+              //debugging
+/*               console.log(game.getBoard());
+ */      
+      // simulate a hesitating machine...
+      setTimeout(function(){
+        simulateAIPlay();
+    }, (game.myRandom()*500));
+
+
     })
   );
 
@@ -50,7 +57,6 @@ const dQuery = (function(){
       let toWrite = document.querySelector(`[data-array="${i}"]`);
       toWrite.firstChild.setAttribute("class", `gameUnit gameUnit${gameArray[i]}`);
       toWrite.firstChild.textContent = gameArray[i];
-      console.log('tentei...');
     }
   }
   
@@ -92,6 +98,10 @@ const Player = () => {
 const game = (function() {
   const _gameboard = new Array(9);
   let _whoPlaysNow = '';
+  let myRandom = () => {
+    // *9 to avoid returning 9
+    return (Math.floor(Math.random()*9));
+  }
 
   // instantiate player / AI
   const humanPlayer = Player();
@@ -110,14 +120,13 @@ const game = (function() {
     }
    }
 
-
   const setUnit = (position, sign) =>{
     // avoids overwritting
     if (_gameboard[position] !== undefined) return;
     _gameboard[position] = sign;
   };
-  const getUnit = (position) => {
-    console.log(_gameboard[position]);
+  const getUnit = (position) => {/* 
+    console.log(_gameboard[position]); */
     return _gameboard[position];
   }
   const getBoard = () => _gameboard;
@@ -131,29 +140,32 @@ const game = (function() {
   }
 
   return {
-      setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard, getRound, whoPlaysNow,
+      setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard, getRound, whoPlaysNow, myRandom,
     }
 })();
 
 
 simulateAIPlay = function() {
-  console.log(game.getBoard());
-  let AIturn = Math.floor(Math.random()*9);
+  console.log("antes da AI: ", game.getBoard());
+  let AIturn = game.myRandom();
+  console.log("AI rand: ", AIturn);
+  board = game.getBoard;
+  
   if(game.getUnit(AIturn) === undefined) {
     game.setUnit(AIturn, game.AIplayer.getSign());
-    console.log ('JOGUEEEI');
     dQuery.updateBoard();
+    game.AIplayer.setPlayStatus(false);
+    game.humanPlayer.setPlayStatus(true);
+
+          //debugging
+          console.log("depois da AI: ", game.getBoard());
   } else {
     simulateAIPlay();
   }
-
 };
 
-
-
-
-
-
-
-
-
+/* randTest = () => {
+  for (i = 0; i < 1000; i++) {
+    console.log(game.myRandom());
+  }
+}; */
