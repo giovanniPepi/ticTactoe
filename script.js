@@ -18,8 +18,8 @@ main = (() => {
         return {
             gameboard, gameUnitContainer, gameUnit, writeUnit, 
         }
-// imediatelly calls it before listeners
     })();
+//handles eventListeners
     const getListeners = (() => {
         /*Listens for clicks on parent node, pass ID of child and calls write 
         function */
@@ -34,15 +34,15 @@ main = (() => {
         );   
     })();
 
-//defines game logic
+//handles game logic
     const game = (() => {
         // will be changed each round
-        let currentPlay = 'O';
+        let _currentPlay = 'O';
         const changeTurn = () => {
-            return currentPlay === 'X'? currentPlay = 'O' : currentPlay = 'X';
+            return _currentPlay === 'X'? _currentPlay = 'O' : _currentPlay = 'X';
         }
         return {
-            changeTurn, currentPlay,
+            changeTurn,     
         }
     })();
 
