@@ -7,7 +7,8 @@ const dQuery = (function(){
   gameUnitContainer.forEach((unit) => 
     unit.addEventListener('click', () => {
       game.setUnit((unit.dataset.array), game.humanPlayer.getSign())
-      console.log(game.getBoard()); 
+      unit.firstChild.textContent = game.humanPlayer.getSign();
+      unit.firstChild.setAttribute("class", `gameUnit gameUnit${game.humanPlayer.getSign()}`);
     })
   );
   
@@ -64,7 +65,7 @@ const game = (() => {
   humanPlayer.setSign('X');
   const AIplayer = Player();
   humanPlayer.getSign()==='O'? AIplayer.setSign('X'):AIplayer.setSign('O');
-  
+
   return {
       setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard,
     }
