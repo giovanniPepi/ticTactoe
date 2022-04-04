@@ -7,16 +7,17 @@ const dQuery = (function(){
 
   //sets the sign for each player
   xSelector.addEventListener("click", () => {
-    game.humanPlayer.setSign('X');
-    game.AIplayer.setSign('O');
-          ///temp visualizations
+    game.humanPlayer.setSign(xSelector.textContent);
+    game.AIplayer.setSign(oSelector.textContent);
+    game.humanPlayer.setPlayStatus(true);
+          //debugging
     console.log('Human: ', game.humanPlayer.getSign());
     console.log('PC: ', game.AIplayer.getSign());
   });
   oSelector.addEventListener("click", () => {
-    game.humanPlayer.setSign('O');
-    game.AIplayer.setSign('X');
-          ///temp visualizations
+    game.humanPlayer.setSign(oSelector.textContent);
+    game.AIplayer.setSign(xSelector.textContent);
+          //debugging
     console.log('Human: ', game.humanPlayer.getSign());
     console.log('PC: ', game.AIplayer.getSign());
   })
@@ -42,7 +43,8 @@ const dQuery = (function(){
 const Player = () => {
   let _sign;
   let _name;
-
+  let _currentlyPlaying = false;
+  
   const setName = (name) => _name = name;
   const setSign = (sign) => {
     caps = sign.toUpperCase();
@@ -56,20 +58,23 @@ const Player = () => {
     _name = '';
   };
 
+  const setPlayStatus = (stats) => {
+    _currentlyPlaying = stats;
+  }
+  const getPlayStatus = _currentlyPlaying;
+
   return {
-    setSign, getSign, reset, setName, getName,
+    setSign, getSign, reset, setName, getName, getPlayStatus, setPlayStatus,
   }; 
 }
 
 //handles game logic
-const game = (() => {
+const game = (function() {
   const _gameboard = new Array(9);
-    
+
   // instantiate player / AI
   const humanPlayer = Player();
   const AIplayer = Player();
-
-  humanPlayer.setName('ducker');
 
   const setUnit = (position, sign) =>{
     // avoids overwritting
@@ -86,15 +91,12 @@ const game = (() => {
       _gameboard[i] = '';
     }
   };
-  const setRound = (sign) => {
-    humanPlayer.getSign()==='O'? AIplayer.setSign('X'):AIplayer.setSign('O');
-  };
   const getRound = () => {
     console.log(humanPlayer.getSign(), AIplayer.getSign());
   }
 
   return {
-      setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard, setRound, getRound,
+      setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard, getRound,
     }
 })();
 
