@@ -1,5 +1,7 @@
-    // handles DOM manipulation
-    dQuery = (function(){
+main = (() => {
+    
+// handles DOM manipulation
+    const dQuery = (function(){
         const gameboard = document.querySelector(".gameboard");
         const gameUnitContainer = document.querySelectorAll(".gameUnitContainer");
         const gameUnit = document.querySelectorAll(".gameUnit");
@@ -16,7 +18,7 @@
         return {
             gameboard, gameUnitContainer, gameUnit, writeUnit, 
         }
-    // imediatelly calls it before listeners
+// imediatelly calls it before listeners
     })();
     const getListeners = (() => {
         /*Listens for clicks on parent node, pass ID of child and calls write 
@@ -31,21 +33,21 @@
             })
         );   
     })();
-    //defines game logic
+
+//defines game logic
     const game = (() => {
         // will be changed each round
         let currentPlay = 'O';
         const changeTurn = () => {
             return currentPlay === 'X'? currentPlay = 'O' : currentPlay = 'X';
         }
-
         return {
-            changeTurn, 
+            changeTurn, currentPlay,
         }
     })();
 
 
 
-//activating
+})();
 
 
