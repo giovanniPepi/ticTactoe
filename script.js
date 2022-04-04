@@ -5,7 +5,7 @@
         const gameUnit = document.querySelectorAll(".gameUnit");
 
         // writes plays according to their info
-        writeUnit = (element, arg) => {
+        const writeUnit = (element, arg) => {
             element.textContent = arg;
             if (arg === 'X') {
                 element.setAttribute("id", "gameUnitX");
@@ -14,7 +14,7 @@
             }
         };
         return {
-            gameboard, gameUnitContainer, gameUnit,
+            gameboard, gameUnitContainer, gameUnit, writeUnit, 
         }
     // imediatelly calls it before listeners
     })();
@@ -26,22 +26,21 @@
                 // exits if already played;
                 if (unit.textContent !== '') return;
                 gameUnit = unit.firstChild;
-                currentPlay = changeTurn();
-                writeUnit(gameUnit, currentPlay);
+                currentPlay = game.changeTurn();
+                dQuery.writeUnit(gameUnit, currentPlay);
             })
         );   
     })();
     //defines game logic
     const game = (() => {
         // will be changed each round
-
         let currentPlay = 'O';
-        changeTurn = () => {
+        const changeTurn = () => {
             return currentPlay === 'X'? currentPlay = 'O' : currentPlay = 'X';
         }
 
         return {
-            changeTurn,
+            changeTurn, 
         }
     })();
 
