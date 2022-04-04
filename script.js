@@ -9,7 +9,6 @@ const dQuery = (function(){
   xSelector.addEventListener("click", () => {
     game.humanPlayer.setSign(xSelector.textContent);
     game.AIplayer.setSign(oSelector.textContent);
-    game.humanPlayer.setPlayStatus(true);
           //debugging
     console.log('Human: ', game.humanPlayer.getSign());
     console.log('PC: ', game.AIplayer.getSign());
@@ -22,13 +21,17 @@ const dQuery = (function(){
     console.log('PC: ', game.AIplayer.getSign());
   })
 
-  //listen for clicks on the gameboard array and sets the sign on them
+  //listen for clicks on the gameboard array and sets the sign/CSS on them
   gameUnitContainer.forEach((unit) => 
     unit.addEventListener('click', () => {
       game.setUnit((unit.dataset.array), game.humanPlayer.getSign())
+      //avoids overwritting
       if (unit.firstChild.textContent !== '') return;
+      //only play one round;
+      if (game.humanPlayer.getPlayStatus() !== true) return;
       unit.firstChild.textContent = game.humanPlayer.getSign();
       unit.firstChild.setAttribute("class", `gameUnit gameUnit${game.humanPlayer.getSign()}`);
+      game.humanPlayer.setPlayStatus(false);
         //debugging
       console.log(game.getBoard());
     })
@@ -43,7 +46,7 @@ const dQuery = (function(){
 const Player = () => {
   let _sign;
   let _name;
-  let _currentlyPlaying = false;
+  let _currentlyPlaying = true;
   
   const setName = (name) => _name = name;
   const setSign = (sign) => {
@@ -61,7 +64,7 @@ const Player = () => {
   const setPlayStatus = (stats) => {
     _currentlyPlaying = stats;
   }
-  const getPlayStatus = _currentlyPlaying;
+  const getPlayStatus = () =>  _currentlyPlaying;
 
   return {
     setSign, getSign, reset, setName, getName, getPlayStatus, setPlayStatus,
