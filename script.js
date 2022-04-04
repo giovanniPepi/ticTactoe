@@ -4,7 +4,7 @@ const dQuery = (function(){
   const gameUnit = document.querySelectorAll(".gameUnit");
   
   return {
-    gameboard, gameUnitContainer, gameUnit,
+    gameUnitContainer, gameUnit,
   }
 })();
 
@@ -25,15 +25,24 @@ const game = (() => {
   };
 
   return {
-    setUnit, 
-    getUnit,
-    resetBoard,
+    setUnit, getUnit, resetBoard,
     }
 })();
 
 const Player = () => {
+  let _sign = '';
+  const setSign = (sign) => { q
+    sign = sign.toUpperCase();
+    if(sign !== 'X' || sign !== 'O') return;
+    _sign = sign;
+  };
+  const getSign = () => {
+    return _sign;
+  };
 
-  
+  return {
+    setSign, getSign,
+  }; 
 }
 
 
