@@ -139,8 +139,20 @@ const game = (function() {
     console.log(humanPlayer.getSign(), AIplayer.getSign());
   }
 
+  // gets gameboard length
+  const getGameboardLength = () => {
+    let count = [];
+    readArray = game.getBoard();
+    readArray.forEach((array => {
+      count.push(array);
+    }))
+    return console.log(count.length);
+  };
+
   return {
-      setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard, getRound, whoPlaysNow, myRandom,
+      setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard,
+      getRound, whoPlaysNow, myRandom, getGameboardLength,
+
     }
 })();
 
@@ -170,3 +182,6 @@ simulateAIPlay = function() {
     console.log(game.myRandom());
   }
 }; */
+
+
+
