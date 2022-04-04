@@ -31,17 +31,18 @@ const game = (() => {
 
 const Player = () => {
   let _sign = '';
-  const setSign = (sign) => { q
-    sign = sign.toUpperCase();
-    if(sign !== 'X' || sign !== 'O') return;
-    _sign = sign;
+  const setSign = (sign) => {
+    _sign = sign.toUpperCase();
   };
   const getSign = () => {
     return _sign;
   };
+  const resetSign = () => {
+    return _sign = '';
+  };
 
   return {
-    setSign, getSign,
+    setSign, getSign, resetSign, 
   }; 
 }
 
