@@ -30,7 +30,11 @@ img:hover {
     height: 100vh;
 }
 .header {
-    height: 15vh;
+/*   height: 15vh;
+ */  height: 30vh;
+}
+.roundSelection {
+  background: green;
 }
 .gameboardContainer {
     padding: var(--gamePadding);
@@ -90,5 +94,4 @@ img:hover {
         filter: blur(0);
      }
 }
-
 

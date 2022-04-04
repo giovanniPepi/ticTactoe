@@ -2,13 +2,34 @@
 const dQuery = (function(){
   const gameUnitContainer = document.querySelectorAll(".gameUnitContainer");
   const gameUnit = document.querySelectorAll(".gameUnit");
+  const xSelector = document.querySelector("#X");
+  const oSelector = document.querySelector("#O");
+
+  //sets the sign for each player
+  xSelector.addEventListener("click", () => {
+    game.humanPlayer.setSign('X');
+    game.AIplayer.setSign('O');
+          ///temp visualizations
+    console.log('Human: ', game.humanPlayer.getSign());
+    console.log('PC: ', game.AIplayer.getSign());
+  });
+  oSelector.addEventListener("click", () => {
+    game.humanPlayer.setSign('O');
+    game.AIplayer.setSign('X');
+          ///temp visualizations
+    console.log('Human: ', game.humanPlayer.getSign());
+    console.log('PC: ', game.AIplayer.getSign());
+  })
 
   //listen for clicks on the gameboard array and sets the sign on them
   gameUnitContainer.forEach((unit) => 
     unit.addEventListener('click', () => {
       game.setUnit((unit.dataset.array), game.humanPlayer.getSign())
+      if (unit.firstChild.textContent !== '') return;
       unit.firstChild.textContent = game.humanPlayer.getSign();
       unit.firstChild.setAttribute("class", `gameUnit gameUnit${game.humanPlayer.getSign()}`);
+        //debugging
+      console.log(game.getBoard());
     })
   );
   
@@ -43,6 +64,13 @@ const Player = () => {
 //handles game logic
 const game = (() => {
   const _gameboard = new Array(9);
+    
+  // instantiate player / AI
+  const humanPlayer = Player();
+  const AIplayer = Player();
+
+  humanPlayer.setName('ducker');
+
   const setUnit = (position, sign) =>{
     // avoids overwritting
     if (_gameboard[position] !== undefined) return;
@@ -58,16 +86,15 @@ const game = (() => {
       _gameboard[i] = '';
     }
   };
-
-  // instantiate player / AI
-  const humanPlayer = Player();
-  humanPlayer.setName('ducker');
-  humanPlayer.setSign('X');
-  const AIplayer = Player();
-  humanPlayer.getSign()==='O'? AIplayer.setSign('X'):AIplayer.setSign('O');
+  const setRound = (sign) => {
+    humanPlayer.getSign()==='O'? AIplayer.setSign('X'):AIplayer.setSign('O');
+  };
+  const getRound = () => {
+    console.log(humanPlayer.getSign(), AIplayer.getSign());
+  }
 
   return {
-      setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard,
+      setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard, setRound, getRound,
     }
 })();
 
