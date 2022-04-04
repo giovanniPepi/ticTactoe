@@ -8,13 +8,36 @@ const dQuery = (function(){
   }
 })();
 
+// constructs a player;
+const Player = () => {
+  let _sign;
+  let _name;
+
+  const setName = (name) => _name = name;
+  const setSign = (sign) => {
+    caps = sign.toUpperCase();
+    console.log({caps});
+    if (caps === 'X' || caps === "O") _sign = caps;
+    else console.log('invalid sign');
+  }
+  const getSign = () => _sign;
+  const getName = () => _name;
+  const reset = () => {
+    _sign = '';
+    _name = '';
+  };
+
+  return {
+    setSign, getSign, reset, setName, getName,
+  }; 
+}
+
 //handles game logic
 const game = (() => {
   const _gameboard = new Array(9);
   const setUnit = (position, sign) =>{
     _gameboard[position] = sign;
   };
-
   const getUnit = (position) => {
     return _gameboard[position];
   }
@@ -23,34 +46,22 @@ const game = (() => {
       _gameboard[i] = '';
     }
   };
+  const humanPlayer = Player();
+  humanPlayer.setName('fucker');
+  humanPlayer.setSign('X');
+  const AIplayer = Player();
+  humanPlayer.getSign()==='O'? AIplayer.setSign('X'):AIplayer.setSign('O');
 
   return {
-    setUnit, getUnit, resetBoard,
+      setUnit, getUnit, resetBoard, humanPlayer, AIplayer,
     }
 })();
 
-const Player = () => {
-  let _sign = '';
-  const setSign = (sign) => {
-    _sign = sign.toUpperCase();
-  };
-  const getSign = () => {
-    return _sign;
-  };
-  const resetSign = () => {
-    return _sign = '';
-  };
-
-  return {
-    setSign, getSign, resetSign, 
-  }; 
-}
 
 
 
 
 
-// function that holds player info;
 
 
 
