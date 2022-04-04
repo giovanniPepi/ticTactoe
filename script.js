@@ -1,7 +1,11 @@
-// handles DOM manipulation
+// handles DOM manipulation and listeners
 const dQuery = (function(){
   const gameUnitContainer = document.querySelectorAll(".gameUnitContainer");
   const gameUnit = document.querySelectorAll(".gameUnit");
+
+  gameUnitContainer.forEach((unit) => 
+    unit.addEventListener('click', () => console.log({unit}))
+  );
   
   return {
     gameUnitContainer, gameUnit,
@@ -16,7 +20,6 @@ const Player = () => {
   const setName = (name) => _name = name;
   const setSign = (sign) => {
     caps = sign.toUpperCase();
-    console.log({caps});
     if (caps === 'X' || caps === "O") _sign = caps;
     else console.log('invalid sign');
   }
@@ -35,10 +38,12 @@ const Player = () => {
 //handles game logic
 const game = (() => {
   const _gameboard = new Array(9);
+
   const setUnit = (position, sign) =>{
     _gameboard[position] = sign;
   };
   const getUnit = (position) => {
+    console.log(_gameboard[position]);
     return _gameboard[position];
   }
   const resetBoard = () => {
@@ -46,6 +51,8 @@ const game = (() => {
       _gameboard[i] = '';
     }
   };
+
+
   const humanPlayer = Player();
   humanPlayer.setName('fucker');
   humanPlayer.setSign('X');
