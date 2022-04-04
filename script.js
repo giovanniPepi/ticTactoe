@@ -9,6 +9,7 @@ const dQuery = (function(){
   xSelector.addEventListener("click", () => {
     game.humanPlayer.setSign(xSelector.textContent);
     game.AIplayer.setSign(oSelector.textContent);
+
           //debugging
     console.log('Human: ', game.humanPlayer.getSign());
     console.log('PC: ', game.AIplayer.getSign());
@@ -16,6 +17,7 @@ const dQuery = (function(){
   oSelector.addEventListener("click", () => {
     game.humanPlayer.setSign(oSelector.textContent);
     game.AIplayer.setSign(xSelector.textContent);
+
           //debugging
     console.log('Human: ', game.humanPlayer.getSign());
     console.log('PC: ', game.AIplayer.getSign());
@@ -24,14 +26,17 @@ const dQuery = (function(){
   //listen for clicks on the gameboard array and sets the sign/CSS on them
   gameUnitContainer.forEach((unit) => 
     unit.addEventListener('click', () => {
-      game.setUnit((unit.dataset.array), game.humanPlayer.getSign())
-      //avoids overwritting
-      if (unit.firstChild.textContent !== '') return;
+
       //only play one round;
       if (game.humanPlayer.getPlayStatus() !== true) return;
+
+      //avoids overwritting
+      if (unit.firstChild.textContent !== '') return;
+
+      game.setUnit((unit.dataset.array), game.humanPlayer.getSign());
       unit.firstChild.textContent = game.humanPlayer.getSign();
       unit.firstChild.setAttribute("class", `gameUnit gameUnit${game.humanPlayer.getSign()}`);
-      game.humanPlayer.setPlayStatus(false);
+      game.humanPlayer.setPlayStatus('false');
         //debugging
       console.log(game.getBoard());
     })
@@ -61,8 +66,8 @@ const Player = () => {
     _name = '';
   };
 
-  const setPlayStatus = (stats) => {
-    _currentlyPlaying = stats;
+  const setPlayStatus = () => {
+    _currentlyPlaying ? _currentlyPlaying = false : _currentlyPlaying = true;
   }
   const getPlayStatus = () =>  _currentlyPlaying;
 
@@ -74,10 +79,25 @@ const Player = () => {
 //handles game logic
 const game = (function() {
   const _gameboard = new Array(9);
+  let _whoPlaysNow = '';
 
   // instantiate player / AI
   const humanPlayer = Player();
   const AIplayer = Player();
+
+  const whoPlaysNow = () => {
+    if (humanPlayer.getPlayStatus()) {
+     humanPlayer.setPlayStatus = false;
+     _whoPlaysNow = 'humanPlayer';
+     return 'humanPlayer';
+    }
+    else if (AIplayer.getPlayStatus()) {     
+      AIplayer.setPlayStatus = false;
+      _whoPlaysNow = 'AIplayer';
+      return 'AIplayer';
+    }
+   }
+
 
   const setUnit = (position, sign) =>{
     // avoids overwritting
@@ -99,9 +119,22 @@ const game = (function() {
   }
 
   return {
-      setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard, getRound,
+      setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard, getRound, whoPlaysNow,
     }
 })();
+
+
+simulateAIPlay = function() {
+  console.log(game.getBoard());
+  let AIturn = Math.floor(Math.random()*9);
+  if(game.getUnit(AIturn) === undefined) {
+    game.setUnit(AIturn, game.AIplayer.getSign());
+    console.log ('JOGUEEEEEEEEEI');
+  } else {
+    simulateAIPlay();
+  }
+
+};
 
 
 
