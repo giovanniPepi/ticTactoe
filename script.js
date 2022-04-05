@@ -5,7 +5,6 @@ const dQuery = (function(){
   const xSelector = document.querySelector("#X");
   const oSelector = document.querySelector("#O");
   
-
   //sets the sign for each player
   xSelector.addEventListener("click", () => {
     game.humanPlayer.setSign(xSelector.textContent);
@@ -46,7 +45,6 @@ const dQuery = (function(){
         //avoids infinite recursion
         if(game.getGameboardLength() >= 8) return;
         else {
-          console.log('ativando AI');
           simulateAIPlay();
         }
     }, (game.myRandom()*350));
@@ -99,7 +97,7 @@ const Player = () => {
 
 //handles game logic
 const game = (function() {
-  const _gameboard = new Array(9);
+  let _gameboard = new Array(9);
   let _whoPlaysNow = '';
   let myRandom = () => {
     // *9 to avoid returning position higher than 8
@@ -134,10 +132,7 @@ const game = (function() {
   }
   const getBoard = () => _gameboard;
   const resetBoard = () => {
-    for (i = 0; i < _gameboard.length; i++) {
-      _gameboard[i] = '';
-      dQuery.updateBoard();
-    }
+    _gameboard = new Array(9);
   };
   const getRound = () => {
     console.log(humanPlayer.getSign(), AIplayer.getSign());
@@ -153,13 +148,33 @@ const game = (function() {
     return (count.length);
   };
 
+  // check winning conditions after every round 
+  const checkWinner = (index, sign) => {
+    // combinations of indexes for each sign that result in a win
+    const winArray = [
+      [0, 4, 8], 
+      [2, 4, 6],
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [8, 5, 2],
+      [7, 4, 1],
+      [6, 3, 0],
+    ];  
+    return winArray
+    //filter array items that have the same index as the current index
+    // this step returns possible winning conditions for the current index
+    .filter((combination) => combination.includes(index))
+    .some((possibleCombination) => possibleCombination.every((index) => game.getUnit(index) === sign));  
+  }
+    
+
   return {
       setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard,
-      getRound, whoPlaysNow, myRandom, getGameboardLength,
+      getRound, whoPlaysNow, myRandom, getGameboardLength, checkWinner, checkWinner,
 
     }
 })();
-
 
 // simulating AI play to test the game
 simulateAIPlay = function() {
@@ -175,7 +190,5 @@ simulateAIPlay = function() {
 
   } else simulateAIPlay();
 };
-
-
 
 
