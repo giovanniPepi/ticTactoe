@@ -43,12 +43,15 @@ const dQuery = (function(){
  */      
       // simulate a hesitating machine...
       setTimeout(function(){
-        simulateAIPlay();
-    }, (game.myRandom()*500));
-
-
-    })
-  );
+        //avoids infinite recursion
+        if(game.getGameboardLength() >= 8) return;
+        else {
+          console.log('ativando AI');
+          simulateAIPlay();
+        }
+    }, (game.myRandom()*350));
+  })
+);
 
   const updateBoard = () => {
     console.log(game.getBoard());
@@ -133,6 +136,7 @@ const game = (function() {
   const resetBoard = () => {
     for (i = 0; i < _gameboard.length; i++) {
       _gameboard[i] = '';
+      dQuery.updateBoard();
     }
   };
   const getRound = () => {
@@ -146,7 +150,7 @@ const game = (function() {
     readArray.forEach((array => {
       count.push(array);
     }))
-    return console.log(count.length);
+    return (count.length);
   };
 
   return {
@@ -159,9 +163,8 @@ const game = (function() {
 
 // simulating AI play to test the game
 simulateAIPlay = function() {
-  console.log("antes da AI: ", game.getBoard());
+  
   let AIturn = game.myRandom();
-  console.log("AI rand: ", AIturn);
   board = game.getBoard;
   
   if(game.getUnit(AIturn) === undefined) {
@@ -170,18 +173,9 @@ simulateAIPlay = function() {
     game.AIplayer.setPlayStatus(false);
     game.humanPlayer.setPlayStatus(true);
 
-          //debugging
-          console.log("depois da AI: ", game.getBoard());
-  } else {
-    simulateAIPlay();
-  }
+  } else simulateAIPlay();
 };
 
-/* randTest = () => {
-  for (i = 0; i < 1000; i++) {
-    console.log(game.myRandom());
-  }
-}; */
 
 
 
