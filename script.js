@@ -100,7 +100,6 @@ const Player = () => {
 //handles game logic
 const game = (function() {
   let _gameboard = new Array(9);
-  let _whoPlaysNow = '';
   let myRandom = () => {
     // *9 to avoid returning position higher than 8
     return (Math.floor(Math.random()*9));
@@ -109,19 +108,6 @@ const game = (function() {
   // instantiate player / AI
   const humanPlayer = Player();
   const AIplayer = Player();
-
-  const whoPlaysNow = () => {
-    if (humanPlayer.getPlayStatus()) {
-     humanPlayer.setPlayStatus = false;
-     _whoPlaysNow = 'humanPlayer';
-     return 'humanPlayer';
-    }
-    else if (AIplayer.getPlayStatus()) {     
-      AIplayer.setPlayStatus = false;
-      _whoPlaysNow = 'AIplayer';
-      return 'AIplayer';
-    }
-   }
 
   const setUnit = (position, sign) =>{
     // avoids overwritting
@@ -178,7 +164,7 @@ const game = (function() {
 
   return {
       setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard,
-      getRound, whoPlaysNow, myRandom, getGameboardLength, validateWinner, 
+      getRound, myRandom, getGameboardLength, validateWinner, 
       setWinner,
     }
 })();
