@@ -10,7 +10,7 @@ const dQuery = (function(){
     game.humanPlayer.setSign(xSelector.textContent);
     game.AIplayer.setSign(oSelector.textContent);
 
-          //debugging
+  //debugging
 /*     console.log('Human: ', game.humanPlayer.getSign());
     console.log('PC: ', game.AIplayer.getSign()); */
   });
@@ -44,15 +44,14 @@ const dQuery = (function(){
       setTimeout(function(){
         //avoids infinite recursion
         if(game.getGameboardLength() >= 8) return;
-        else {
-          simulateAIPlay();
-        }
+        else simulateAIPlay();
     }, (game.myRandom()*350));
   })
 );
 
   const updateBoard = () => {
-    console.log(game.getBoard());
+    // debugging
+  /*   console.log(game.getBoard()); */
     gameArray = game.getBoard();
     for (let i = 0; i < 9; i++){
       let toWrite = document.querySelector(`[data-array="${i}"]`);
@@ -167,8 +166,7 @@ const game = (function() {
     .filter((combination) => combination.includes(index))
     .some((possibleCombination) => possibleCombination.every((index) => game.getUnit(index) === sign));  
   }
-    
-
+ 
   return {
       setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard,
       getRound, whoPlaysNow, myRandom, getGameboardLength, checkWinner, checkWinner,
