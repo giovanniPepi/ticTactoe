@@ -70,6 +70,7 @@ const Player = () => {
   let _sign;
   let _name;
   let _currentlyPlaying = true;
+  let _winningStatus = false; 
   
   const setName = (name) => _name = name;
   const setSign = (sign) => {
@@ -87,9 +88,12 @@ const Player = () => {
     _currentlyPlaying ? _currentlyPlaying = false : _currentlyPlaying = true;
   }
   const getPlayStatus = () =>  _currentlyPlaying;
+  const setWinner = () => _winningStatus = true;
+  const isWinner = () => _winningStatus;
 
   return {
-    setSign, getSign, reset, setName, getName, getPlayStatus, setPlayStatus,
+    setSign, getSign, reset, setName, getName, getPlayStatus, 
+    setPlayStatus, isWinner, setWinner,
   }; 
 }
 
@@ -124,9 +128,7 @@ const game = (function() {
     if (_gameboard[position] !== undefined) return;
     _gameboard[position] = sign;
     //before proceding back
-    if(game.checkWinner(_gameboard.indexOf(sign), sign)) {
-      setWinner(sign);
-    }
+    if(game.validateWinner(_gameboard.indexOf(sign), sign)) setWinner(sign);
   };
   const getUnit = (position) => {/* 
     console.log(_gameboard[position]); */
@@ -151,7 +153,7 @@ const game = (function() {
   };
 
   // check winning conditions after every round 
-  const checkWinner = (index, sign) => {
+  const validateWinner = (index, sign) => {
     // combinations of indexes for each sign that result in a win
     const winArray = [
       [0, 4, 8], 
@@ -171,12 +173,12 @@ const game = (function() {
     .some((possibleCombination) => possibleCombination.every((index) => game.getUnit(index) === sign));  
   }
   const setWinner = (sign) => {
-    console.log(sign + ' has won!!');
+    humanPlayer.getSign() === sign? console.log(humanPlayer.getSign() + ' has won') : console.log(AIplayer.getSign() + ' has won');
   }
 
   return {
       setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard,
-      getRound, whoPlaysNow, myRandom, getGameboardLength, checkWinner, checkWinner,
+      getRound, whoPlaysNow, myRandom, getGameboardLength, validateWinner, 
       setWinner,
     }
 })();
