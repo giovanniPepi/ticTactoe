@@ -33,10 +33,11 @@ const dQuery = (function(){
       //avoids overwritting
       if (unit.firstChild.textContent !== '') return;
 
-      game.setUnit((unit.dataset.array), game.humanPlayer.getSign());
       unit.firstChild.textContent = game.humanPlayer.getSign();
       unit.firstChild.setAttribute("class", `gameUnit gameUnit${game.humanPlayer.getSign()}`);
       game.humanPlayer.setPlayStatus(false);
+      game.setUnit((unit.dataset.array), game.humanPlayer.getSign());
+
               //debugging
 /*               console.log(game.getBoard());
  */      
@@ -70,6 +71,7 @@ const Player = () => {
   let _sign;
   let _name;
   let _currentlyPlaying = true;
+  let _winningStatus = false; 
   
   const setName = (name) => _name = name;
   const setSign = (sign) => {
@@ -87,16 +89,19 @@ const Player = () => {
     _currentlyPlaying ? _currentlyPlaying = false : _currentlyPlaying = true;
   }
   const getPlayStatus = () =>  _currentlyPlaying;
+  const setWinner = () => _winningStatus = true;
+  const isWinner = () => _winningStatus;
 
   return {
-    setSign, getSign, reset, setName, getName, getPlayStatus, setPlayStatus,
+    setSign, getSign, reset, setName, getName, getPlayStatus, 
+    setPlayStatus, isWinner, setWinner,
   }; 
 }
 
 //handles game logic
 const game = (function() {
   let _gameboard = new Array(9);
-  let _whoPlaysNow = '';
+  let _gameOn = true;
   let myRandom = () => {
     // *9 to avoid returning position higher than 8
     return (Math.floor(Math.random()*9));
@@ -106,27 +111,16 @@ const game = (function() {
   const humanPlayer = Player();
   const AIplayer = Player();
 
-  const whoPlaysNow = () => {
-    if (humanPlayer.getPlayStatus()) {
-     humanPlayer.setPlayStatus = false;
-     _whoPlaysNow = 'humanPlayer';
-     return 'humanPlayer';
-    }
-    else if (AIplayer.getPlayStatus()) {     
-      AIplayer.setPlayStatus = false;
-      _whoPlaysNow = 'AIplayer';
-      return 'AIplayer';
-    }
-   }
+  const getGameStats = () => _gameOn;
 
   const setUnit = (position, sign) =>{
     // avoids overwritting
-    if (_gameboard[position] !== undefined) return;
+    if (_gameboard[position] !== undefined  || !game.getGameStats()) return;
     _gameboard[position] = sign;
+
     //before proceding back
-    if(game.checkWinner(_gameboard.indexOf(sign), sign)) {
-      setWinner(sign);
-    }
+    dQuery.updateBoard();
+    if(game.validateWinner(_gameboard.indexOf(sign), sign)) setWinner(sign);
   };
   const getUnit = (position) => {/* 
     console.log(_gameboard[position]); */
@@ -151,7 +145,7 @@ const game = (function() {
   };
 
   // check winning conditions after every round 
-  const checkWinner = (index, sign) => {
+  const validateWinner = (index, sign) => {
     // combinations of indexes for each sign that result in a win
     const winArray = [
       [0, 4, 8], 
@@ -171,13 +165,18 @@ const game = (function() {
     .some((possibleCombination) => possibleCombination.every((index) => game.getUnit(index) === sign));  
   }
   const setWinner = (sign) => {
-    console.log(sign + ' has won!!');
+    _gameOn = false;
+    if (humanPlayer.getSign() === sign) {
+      console.log(humanPlayer.getSign() + ' has won');
+    } else if (AIplayer.getSign() === sign) {
+        console.log(AIplayer.getSign() + ' has won');
+      } else console.log ('Something\'s wrong, I can feel it');
   }
 
   return {
       setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard,
-      getRound, whoPlaysNow, myRandom, getGameboardLength, checkWinner, checkWinner,
-      setWinner,
+      getRound, myRandom, getGameboardLength, validateWinner, 
+      setWinner, getGameStats
     }
 })();
 
@@ -193,7 +192,6 @@ simulateAIPlay = function() {
     dQuery.updateBoard();
     game.AIplayer.setPlayStatus(false);
     game.humanPlayer.setPlayStatus(true);
-
   } else simulateAIPlay();
 };
 
