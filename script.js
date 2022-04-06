@@ -76,14 +76,13 @@ const Player = () => {
     caps = sign.toUpperCase();
     if (caps === 'X' || caps === "O") _sign = caps;
     else console.log('invalid sign');
-  }
+  };
   const getSign = () => _sign;
   const getName = () => _name;
   const reset = () => {
     _sign = '';
     _name = '';
   };
-
   const setPlayStatus = () => {
     _currentlyPlaying ? _currentlyPlaying = false : _currentlyPlaying = true;
   }
@@ -124,6 +123,10 @@ const game = (function() {
     // avoids overwritting
     if (_gameboard[position] !== undefined) return;
     _gameboard[position] = sign;
+    //before proceding back
+    if(game.checkWinner(_gameboard.indexOf(sign), sign)) {
+      setWinner(sign);
+    }
   };
   const getUnit = (position) => {/* 
     console.log(_gameboard[position]); */
@@ -161,16 +164,20 @@ const game = (function() {
       [6, 3, 0],
     ];  
     return winArray
-    //filter array items that have the same index as the current index
-    // this step returns possible winning conditions for the current index
+    // returns possible winning conditions
     .filter((combination) => combination.includes(index))
+    // some checks the array and return true if the item contains the winning index
+    // every returns true if every combination found on the array matches the winning array 
     .some((possibleCombination) => possibleCombination.every((index) => game.getUnit(index) === sign));  
   }
- 
+  const setWinner = (sign) => {
+    console.log(sign + ' has won!!');
+  }
+
   return {
       setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard,
       getRound, whoPlaysNow, myRandom, getGameboardLength, checkWinner, checkWinner,
-
+      setWinner,
     }
 })();
 
@@ -180,6 +187,7 @@ simulateAIPlay = function() {
   let AIturn = game.myRandom();
   board = game.getBoard;
   
+  // avoids overwritting
   if(game.getUnit(AIturn) === undefined) {
     game.setUnit(AIturn, game.AIplayer.getSign());
     dQuery.updateBoard();
