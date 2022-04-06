@@ -5,13 +5,12 @@ const dQuery = (function(){
   const xSelector = document.querySelector("#X");
   const oSelector = document.querySelector("#O");
   
-
   //sets the sign for each player
   xSelector.addEventListener("click", () => {
     game.humanPlayer.setSign(xSelector.textContent);
     game.AIplayer.setSign(oSelector.textContent);
 
-          //debugging
+  //debugging
 /*     console.log('Human: ', game.humanPlayer.getSign());
     console.log('PC: ', game.AIplayer.getSign()); */
   });
@@ -43,15 +42,16 @@ const dQuery = (function(){
  */      
       // simulate a hesitating machine...
       setTimeout(function(){
-        simulateAIPlay();
-    }, (game.myRandom()*500));
-
-
-    })
-  );
+        //avoids infinite recursion
+        if(game.getGameboardLength() >= 8) return;
+        else simulateAIPlay();
+    }, (game.myRandom()*350));
+  })
+);
 
   const updateBoard = () => {
-    console.log(game.getBoard());
+    // debugging
+  /*   console.log(game.getBoard()); */
     gameArray = game.getBoard();
     for (let i = 0; i < 9; i++){
       let toWrite = document.querySelector(`[data-array="${i}"]`);
@@ -96,7 +96,7 @@ const Player = () => {
 
 //handles game logic
 const game = (function() {
-  const _gameboard = new Array(9);
+  let _gameboard = new Array(9);
   let _whoPlaysNow = '';
   let myRandom = () => {
     // *9 to avoid returning position higher than 8
@@ -131,25 +131,53 @@ const game = (function() {
   }
   const getBoard = () => _gameboard;
   const resetBoard = () => {
-    for (i = 0; i < _gameboard.length; i++) {
-      _gameboard[i] = '';
-    }
+    _gameboard = new Array(9);
   };
   const getRound = () => {
     console.log(humanPlayer.getSign(), AIplayer.getSign());
   }
 
+  // gets gameboard length
+  const getGameboardLength = () => {
+    let count = [];
+    readArray = game.getBoard();
+    readArray.forEach((array => {
+      count.push(array);
+    }))
+    return (count.length);
+  };
+
+  // check winning conditions after every round 
+  const checkWinner = (index, sign) => {
+    // combinations of indexes for each sign that result in a win
+    const winArray = [
+      [0, 4, 8], 
+      [2, 4, 6],
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [8, 5, 2],
+      [7, 4, 1],
+      [6, 3, 0],
+    ];  
+    return winArray
+    //filter array items that have the same index as the current index
+    // this step returns possible winning conditions for the current index
+    .filter((combination) => combination.includes(index))
+    .some((possibleCombination) => possibleCombination.every((index) => game.getUnit(index) === sign));  
+  }
+ 
   return {
-      setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard, getRound, whoPlaysNow, myRandom,
+      setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard,
+      getRound, whoPlaysNow, myRandom, getGameboardLength, checkWinner, checkWinner,
+
     }
 })();
 
-
 // simulating AI play to test the game
 simulateAIPlay = function() {
-  console.log("antes da AI: ", game.getBoard());
+  
   let AIturn = game.myRandom();
-  console.log("AI rand: ", AIturn);
   board = game.getBoard;
   
   if(game.getUnit(AIturn) === undefined) {
@@ -158,15 +186,7 @@ simulateAIPlay = function() {
     game.AIplayer.setPlayStatus(false);
     game.humanPlayer.setPlayStatus(true);
 
-          //debugging
-          console.log("depois da AI: ", game.getBoard());
-  } else {
-    simulateAIPlay();
-  }
+  } else simulateAIPlay();
 };
 
-/* randTest = () => {
-  for (i = 0; i < 1000; i++) {
-    console.log(game.myRandom());
-  }
-}; */
+
