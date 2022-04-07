@@ -18,6 +18,7 @@ const dQuery = (function(){
   //listen for clicks on the gameboard array and sets the sign/CSS on them
   gameUnitContainer.forEach((unit) => 
     unit.addEventListener('click', () => {
+      console.log('listener começo');
 
       //waits for sign selection
       if(game.humanPlayer.getSign() === undefined || game.cpuPlayer.getSign() === undefined) return;
@@ -31,6 +32,8 @@ const dQuery = (function(){
       unit.firstChild.textContent = sign;
       unit.firstChild.setAttribute("class", `gameUnit gameUnit${sign}`);
       game.evaluateRound((unit.dataset.array), sign);
+
+      console.log('listener fim');
   })
 );
 
@@ -39,7 +42,7 @@ const dQuery = (function(){
     for (let i = 0; i < 9; i++){
       let toWrite = document.querySelector(`[data-array="${i}"]`);
       toWrite.firstChild.setAttribute("class", `gameUnit gameUnit${gameArray[i]}`);
-      toWrite.firstChild.textContent = gameArray[i];
+      toWrite.firstChild.textContent = gameArray[i];     
     }
   };
 
@@ -106,13 +109,8 @@ const game = (function() {
   };
 
 
-
-
-  const evaluateRound = (position, sign) => {        
-    if(game.validateWinner(_gameboard.indexOf(sign), sign)) {
-      setWinner(sign);
-      return
-    };
+  const evaluateRound = (positionReceived, sign) => {        
+    let position = parseInt(positionReceived);
 
     // doesn't play if not suposed to 
     if (!game.getGameStats()) return;        
@@ -128,35 +126,13 @@ const game = (function() {
       cpuPlayer.setPlayStatus(false);
       humanPlayer.setPlayStatus(true);
     } else console.log('somethin\'gs wrong, I can feel it....');
-
-    if(game.validateWinner(position, sign)) setWinner(sign);
-    // update before proceding back
-    dQuery.updateBoardCSS();
     game.cpuPlayer.getPlayStatus()?   cpuPlay() : false;
+    
+    if(game.validateWinner(position, sign)) {
+      console.log('ME FODE')
+      setWinner(sign);
+    };
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   const getBoard = () => _gameboard;
 
@@ -178,30 +154,43 @@ const game = (function() {
     return (count.length);
   };
 
-    // combinations of indexes for each sign that result in a win
-  const winArray = [
-    [0, 4, 8], 
-    [2, 4, 6],
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [8, 5, 2],
-    [7, 4, 1],
-    [6, 3, 0],
-  ];  
 
   // check winning conditions after every round 
   const validateWinner = (index, sign) => {
+    
+    // combinations of indexes for each sign that result in a win
+    const winArray = [
+      [0, 4, 8], 
+      [2, 4, 6],
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [8, 5, 2],
+      [7, 4, 1],
+      [6, 3, 0],
+    ];  
 
+    console.log('validate winner ativou com ' + index + sign + 'tipo de index' + typeof(index) + 'tipo de sign ' + typeof(sign));
+    console.log("Resultado da função mapeadora é " + (winArray
+    // returns possible winning conditions
+    .filter((combination) => combination.includes(index))
+    // some checks the array and return true if the item contains the winning index
+    // every returns true if every combination found on the array matches the winning array 
+    .some((possibleCombination) => possibleCombination.every((index) => game.getUnit(index) === sign))));
+    
     return winArray
     // returns possible winning conditions
     .filter((combination) => combination.includes(index))
     // some checks the array and return true if the item contains the winning index
     // every returns true if every combination found on the array matches the winning array 
     .some((possibleCombination) => possibleCombination.every((index) => game.getUnit(index) === sign));  
+
+
+
   }
 
   const setWinner = (sign) => {
+    console.log('setwinner ativou');
     _gameOn = false;
     cpuPlayer.setPlayStatus(false);
     if (humanPlayer.getSign() === sign) {
@@ -211,6 +200,11 @@ const game = (function() {
         alert(cpuPlayer.getSign() + ' has won');
         resetGame();
       } else console.log ('Something\'s wrong, I can feel it');
+
+
+      /// nuclear
+
+      window.location.reload()
   };
 
   const debugPlayer = (player) => {
@@ -231,13 +225,13 @@ const game = (function() {
   return {
       evaluateRound, setUnit, getUnit, resetBoardArray, humanPlayer, cpuPlayer, getBoard,
       getRound, getGameboardLength, validateWinner, 
-      setWinner, getGameStats, resetGame, debugPlayer, winArray,
+      setWinner, getGameStats, resetGame, debugPlayer, 
     }
 })();
 
 // simulating AI play to test the game
 const cpuPlay = function() {
-
+  console.log('cpu player ativou');
   // doesn't play if it's not suposed to
   if (!game.getGameStats()) return; 
 
@@ -254,8 +248,10 @@ const cpuPlay = function() {
   
   while (game.getUnit(cpuTurn) !== undefined) {
     cpuTurn = myRandom();
-    console.log(cpuTurn);
   };
-  game.evaluateRound(cpuTurn, game.cpuPlayer.getSign());  
+  game.evaluateRound(cpuTurn, game.cpuPlayer.getSign()); 
+  dQuery.updateBoardCSS();
 }
+
+
 
