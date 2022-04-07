@@ -19,6 +19,9 @@ const dQuery = (function(){
   gameUnitContainer.forEach((unit) => 
     unit.addEventListener('click', () => {
 
+      //waits for sign selection
+      if(game.humanPlayer.getSign() === undefined || game.cpuPlayer.getSign() === undefined) return;
+
       //only play one round;
       if (!game.humanPlayer.getPlayStatus()) return;
 
@@ -73,12 +76,12 @@ const Player = () => {
     _currentlyPlaying? _currentlyPlaying = false : _currentlyPlaying = true;
   }
   const getPlayStatus = () =>  _currentlyPlaying;
-  const setWinner = (status) => _winningStatus = status;
+  const updateWinner = (status) => _winningStatus = status;
   const isWinner = () => _winningStatus;
 
   return {
     setSign, getSign, reset, getPlayStatus, 
-    setPlayStatus, isWinner, setWinner,
+    setPlayStatus, isWinner, updateWinner,
   }; 
 }
 
@@ -103,7 +106,14 @@ const game = (function() {
   };
 
 
+
+
   const evaluateRound = (position, sign) => {        
+    if(game.validateWinner(_gameboard.indexOf(sign), sign)) {
+      setWinner(sign);
+      return
+    };
+
     // doesn't play if not suposed to 
     if (!game.getGameStats()) return;        
 
@@ -119,9 +129,9 @@ const game = (function() {
       humanPlayer.setPlayStatus(true);
     } else console.log('somethin\'gs wrong, I can feel it....');
 
+    if(game.validateWinner(position, sign)) setWinner(sign);
     // update before proceding back
     dQuery.updateBoardCSS();
-    if(game.validateWinner(_gameboard.indexOf(sign), sign)) setWinner(sign);
     game.cpuPlayer.getPlayStatus()?   cpuPlay() : false;
   }
 
@@ -168,19 +178,21 @@ const game = (function() {
     return (count.length);
   };
 
+    // combinations of indexes for each sign that result in a win
+  const winArray = [
+    [0, 4, 8], 
+    [2, 4, 6],
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [8, 5, 2],
+    [7, 4, 1],
+    [6, 3, 0],
+  ];  
+
   // check winning conditions after every round 
   const validateWinner = (index, sign) => {
-    // combinations of indexes for each sign that result in a win
-    const winArray = [
-      [0, 4, 8], 
-      [2, 4, 6],
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [8, 5, 2],
-      [7, 4, 1],
-      [6, 3, 0],
-    ];  
+
     return winArray
     // returns possible winning conditions
     .filter((combination) => combination.includes(index))
@@ -211,15 +223,15 @@ const game = (function() {
     resetBoardArray();
     dQuery.resetBoardCSS();
     _gameOn = true;
-    humanPlayer.setWinner(false); 
-    cpuPlayer.setWinner(false);
+    humanPlayer.updateWinner(false); 
+    cpuPlayer.updateWinner(false);
     humanPlayer.setPlayStatus(); 
   };
 
   return {
       evaluateRound, setUnit, getUnit, resetBoardArray, humanPlayer, cpuPlayer, getBoard,
       getRound, getGameboardLength, validateWinner, 
-      setWinner, getGameStats, resetGame, debugPlayer, 
+      setWinner, getGameStats, resetGame, debugPlayer, winArray,
     }
 })();
 

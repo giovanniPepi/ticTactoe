@@ -8,12 +8,12 @@ const test = (() => {
         game.setUnit(4, sign);
         game.setUnit(8, sign);
           for (let i = 0; i < game.getBoard().length; i++){
-            if (game.checkWinner(i, sign) === true){
+            if (game.validateWinner(i, sign) === true){
               winCount.push(',');
               break;
             }
           } 
-        game.resetBoard();
+        game.resetBoardArray();
         break;
         case 1:
           game.setUnit(2, sign);
@@ -21,24 +21,24 @@ const test = (() => {
           game.setUnit(6, sign);
           
           for (let i = 0; i < game.getBoard().length; i++){
-            if (game.checkWinner(i, sign) === true){
+            if (game.validateWinner(i, sign) === true){
               winCount.push(',');;
               break;
             }
           } 
-          game.resetBoard();
+          game.resetBoardArray();
         break;
         case 2:
         game.setUnit(0, sign);
         game.setUnit(1, sign);
         game.setUnit(2, sign);      
           for (let i = 0; i < game.getBoard().length; i++){
-            if (game.checkWinner(i, sign) === true){
+            if (game.validateWinner(i, sign) === true){
               winCount.push(',');;
               break;
             }
           } 
-          game.resetBoard();
+          game.resetBoardArray();
         break;
         case 3:
           game.setUnit(3, sign);
@@ -46,12 +46,12 @@ const test = (() => {
           game.setUnit(5, sign);
           
           for (let i = 0; i < game.getBoard().length; i++){
-            if (game.checkWinner(i, sign) === true){
+            if (game.validateWinner(i, sign) === true){
               winCount.push(',');;
               break;
             }
           } 
-          game.resetBoard();
+          game.resetBoardArray();
         break;
         case 4:
           game.setUnit(6, sign);
@@ -59,12 +59,12 @@ const test = (() => {
           game.setUnit(8, sign);
           
           for (let i = 0; i < game.getBoard().length; i++){
-            if (game.checkWinner(i, sign) === true){
+            if (game.validateWinner(i, sign) === true){
               winCount.push(',');;
               break;
             }
           } 
-          game.resetBoard();
+          game.resetBoardArray();
         break;
         case 5:
           game.setUnit(8, sign);
@@ -72,12 +72,12 @@ const test = (() => {
           game.setUnit(2, sign);
           
           for (let i = 0; i < game.getBoard().length; i++){
-            if (game.checkWinner(i, sign) === true){
+            if (game.validateWinner(i, sign) === true){
               winCount.push(',');;
               break;
             }
           } 
-          game.resetBoard();
+          game.resetBoardArray();
         break;
         case 6:
           game.setUnit(7, sign);
@@ -85,12 +85,12 @@ const test = (() => {
           game.setUnit(1, sign);
           
           for (let i = 0; i < game.getBoard().length; i++){
-            if (game.checkWinner(i, sign) === true){
+            if (game.validateWinner(i, sign) === true){
               winCount.push(',');;
               break;
             }
           } 
-          game.resetBoard();
+          game.resetBoardArray();
         break;
         case 7:
           game.setUnit(6, sign);
@@ -98,12 +98,12 @@ const test = (() => {
           game.setUnit(0, sign);
           
           for (let i = 0; i < game.getBoard().length; i++){
-            if (game.checkWinner(i, sign) === true){
+            if (game.validateWinner(i, sign) === true){
               winCount.push(',');;
               break;
             }
           } 
-          game.resetBoard();
+          game.resetBoardArray();
         break;        
       }    
   }
