@@ -8,25 +8,17 @@ const dQuery = (function(){
   //sets the sign for each player
   xSelector.addEventListener("click", () => {
     game.humanPlayer.setSign(xSelector.textContent);
-    game.AIplayer.setSign(oSelector.textContent);
-
-  //debugging
-/*     console.log('Human: ', game.humanPlayer.getSign());
-    console.log('PC: ', game.AIplayer.getSign()); */
+    game.cpuPlayer.setSign(oSelector.textContent);
   });
+
   oSelector.addEventListener("click", () => {
     game.humanPlayer.setSign(oSelector.textContent);
-    game.AIplayer.setSign(xSelector.textContent);
-
-          //debugging
-/*     console.log('Human: ', game.humanPlayer.getSign());
-    console.log('PC: ', game.AIplayer.getSign()); */
+    game.cpuPlayer.setSign(xSelector.textContent);
   })
 
   //listen for clicks on the gameboard array and sets the sign/CSS on them
   gameUnitContainer.forEach((unit) => 
     unit.addEventListener('click', () => {
-
       //only play one round;
       if (game.humanPlayer.getPlayStatus() !== true) return;
 
@@ -35,22 +27,14 @@ const dQuery = (function(){
 
       unit.firstChild.textContent = game.humanPlayer.getSign();
       unit.firstChild.setAttribute("class", `gameUnit gameUnit${game.humanPlayer.getSign()}`);
-      game.humanPlayer.setPlayStatus(false);
-      game.setUnit((unit.dataset.array), game.humanPlayer.getSign());
-
-              //debugging
-/*               console.log(game.getBoard());
- */      
-      // simulate a hesitating machine...
-      setTimeout(function(){
-        //avoids infinite recursion
-        if(game.getGameboardLength() >= 8) return;
-        else simulateAIPlay();
-    }, (game.myRandom()*350));
+      game.play((unit.dataset.array), game.humanPlayer.getSign());
+      //avoids infinite recursion
+      if(game.getGameboardLength() >= 8) return;
+      cpuPlay();
   })
 );
 
-  const updateBoard = () => {
+  const updateBoardCSS = () => {
     // debugging
   /*   console.log(game.getBoard()); */
     gameArray = game.getBoard();
@@ -59,34 +43,39 @@ const dQuery = (function(){
       toWrite.firstChild.setAttribute("class", `gameUnit gameUnit${gameArray[i]}`);
       toWrite.firstChild.textContent = gameArray[i];
     }
-  }
+  };
+
+  const resetBoardCSS = () => {
+    for (let i = 0; i < 9; i++){
+      let b = document.querySelector(`[data-array="${i}"]`);
+      b.firstChild.setAttribute("class", "gameUnit");
+      b.firstChild.textContent = '';
+    }
+  } 
   
   return {
-    gameUnitContainer, gameUnit, updateBoard,
+    gameUnitContainer, gameUnit, updateBoardCSS, resetBoardCSS,
   }
 })();
 
 // constructs a player;
 const Player = () => {
   let _sign;
-  let _name;
-  let _currentlyPlaying = true;
+  let _currentlyPlaying = false;
   let _winningStatus = false; 
-  
-  const setName = (name) => _name = name;
+
   const setSign = (sign) => {
     caps = sign.toUpperCase();
     if (caps === 'X' || caps === "O") _sign = caps;
     else console.log('invalid sign');
   };
   const getSign = () => _sign;
-  const getName = () => _name;
   const reset = () => {
     _sign = '';
     _name = '';
   };
   const setPlayStatus = () => {
-    _currentlyPlaying ? _currentlyPlaying = false : _currentlyPlaying = true;
+    _currentlyPlaying? _currentlyPlaying = false : _currentlyPlaying = true;
   }
   const getPlayStatus = () =>  _currentlyPlaying;
   const setWinner = () => _winningStatus = true;
@@ -109,29 +98,41 @@ const game = (function() {
 
   // instantiate player / AI
   const humanPlayer = Player();
-  const AIplayer = Player();
+  const cpuPlayer = Player();
 
   const getGameStats = () => _gameOn;
 
   const setUnit = (position, sign) =>{
-    // avoids overwritting
-    if (_gameboard[position] !== undefined  || !game.getGameStats()) return;
+    // avoids overwritting non empty array
+    if (_gameboard[position] !== undefined) return;
     _gameboard[position] = sign;
+  };  
 
-    //before proceding back
-    dQuery.updateBoard();
+  const play = (position, sign) => {
+    if (!game.getGameStats() || !humanPlayer.getPlayStatus()) return;      
+    setUnit(position, sign)
+    // update before proceding back
+    dQuery.updateBoardCSS();
     if(game.validateWinner(_gameboard.indexOf(sign), sign)) setWinner(sign);
-  };
+    humanPlayer.setPlayStatus(false);
+    cpuPlayer.setPlayStatus(true);
+    console.log(cpuPlayer.getPlayStatus());
+    console.log('fuck');
+  }
+
   const getUnit = (position) => {/* 
     console.log(_gameboard[position]); */
     return _gameboard[position];
-  }
+  };
+
   const getBoard = () => _gameboard;
-  const resetBoard = () => {
+
+  const resetBoardArray = () => {
     _gameboard = new Array(9);
   };
+
   const getRound = () => {
-    console.log(humanPlayer.getSign(), AIplayer.getSign());
+    console.log(humanPlayer.getSign(), cpuPlayer.getSign());
   }
 
   // gets gameboard length
@@ -164,35 +165,57 @@ const game = (function() {
     // every returns true if every combination found on the array matches the winning array 
     .some((possibleCombination) => possibleCombination.every((index) => game.getUnit(index) === sign));  
   }
+
   const setWinner = (sign) => {
     _gameOn = false;
     if (humanPlayer.getSign() === sign) {
-      console.log(humanPlayer.getSign() + ' has won');
-    } else if (AIplayer.getSign() === sign) {
-        console.log(AIplayer.getSign() + ' has won');
+      alert(humanPlayer.getSign() + ' has won');
+      resetGame();
+    } else if (cpuPlayer.getSign() === sign) {
+        alert(cpuPlayer.getSign() + ' has won');
+        resetGame();
       } else console.log ('Something\'s wrong, I can feel it');
+  };
+
+  const evaluate = (player) => {
+    console.log('current game state: ' + getGameStats());
+    console.log('current play stats: '+ player.getPlayStatus());
+    console.log()
+
   }
+  evaluate(humanPlayer);
+  evaluate(cpuPlayer);
+
+  const resetGame = () => {
+    resetBoardArray();
+    dQuery.resetBoardCSS();
+    _currentlyPlaying = true;
+    _winningStatus = false; 
+    _gameOn = true;
+  };
+
+
 
   return {
-      setUnit, getUnit, resetBoard, humanPlayer, AIplayer, getBoard,
+      play, setUnit, getUnit, resetBoardArray, humanPlayer, cpuPlayer, getBoard,
       getRound, myRandom, getGameboardLength, validateWinner, 
-      setWinner, getGameStats
+      setWinner, getGameStats, resetGame, evaluate,
     }
 })();
 
 // simulating AI play to test the game
-simulateAIPlay = function() {
-  
+cpuPlay = function() {
+  if(!game.cpuPlayer.getPlayStatus()) return;
   let AIturn = game.myRandom();
   board = game.getBoard;
   
   // avoids overwritting
   if(game.getUnit(AIturn) === undefined) {
-    game.setUnit(AIturn, game.AIplayer.getSign());
-    dQuery.updateBoard();
-    game.AIplayer.setPlayStatus(false);
+    game.setUnit(AIturn, game.cpuPlayer.getSign());
+    dQuery.updateBoardCSS();
+    game.cpuPlayer.setPlayStatus(false);
     game.humanPlayer.setPlayStatus(true);
-  } else simulateAIPlay();
+  } else cpuPlay();
 };
 
 
