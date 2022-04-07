@@ -87,10 +87,7 @@ const Player = () => {
 const game = (function() {
   let _gameboard = new Array(9);
   let _gameOn = true;
-  let myRandom = () => {
-    // *9 to avoid returning position higher than 8
-    return (Math.floor(Math.random()*9));
-  }
+
 
   // instantiate player / AI
   const humanPlayer = Player();
@@ -105,6 +102,8 @@ const game = (function() {
   };  
 
   const play = (position, sign) => {
+    //debug
+    console.log('notgamestats: ', game.getGameStats(), 'not playstats', !humanPlayer.getPlayStatus());
     if (!game.getGameStats() || !humanPlayer.getPlayStatus()) return;      
     setUnit(position, sign)
     // update before proceding back
@@ -194,20 +193,26 @@ const game = (function() {
 
   return {
       play, setUnit, getUnit, resetBoardArray, humanPlayer, cpuPlayer, getBoard,
-      getRound, myRandom, getGameboardLength, validateWinner, 
+      getRound, getGameboardLength, validateWinner, 
       setWinner, getGameStats, resetGame, evaluate,
     }
 })();
 
 // simulating AI play to test the game
 cpuPlay = function() {
+
+  let myRandom = () => {
+    // *9 to avoid returning position higher than 8
+    return (Math.floor(Math.random()*9));
+  }  
+
   //avoids infinite recursion
   if(game.getGameboardLength() >= 8) return;
 
   if(!game.cpuPlayer.getPlayStatus()) return;
-  let AIturn = game.myRandom();
+  let AIturn = myRandom();
   board = game.getBoard();
-  
+
   // avoids overwritting
   if(game.getUnit(AIturn) === undefined) {
     game.setUnit(AIturn, game.cpuPlayer.getSign());
