@@ -18,6 +18,7 @@ const dQuery = (function(){
   //listen for clicks on the gameboard array and sets the sign/CSS on them
   gameUnitContainer.forEach((unit) => 
     unit.addEventListener('click', () => {
+
       //only play one round;
       if (!game.humanPlayer.getPlayStatus()) return;
 
@@ -26,13 +27,11 @@ const dQuery = (function(){
       let sign = game.humanPlayer.getSign();
       unit.firstChild.textContent = sign;
       unit.firstChild.setAttribute("class", `gameUnit gameUnit${sign}`);
-      game.play((unit.dataset.array), sign);
+      game.evaluateRound((unit.dataset.array), sign);
   })
 );
 
   const updateBoardCSS = () => {
-    // debugging
-  /*   console.log(game.getBoard()); */
     gameArray = game.getBoard();
     for (let i = 0; i < 9; i++){
       let toWrite = document.querySelector(`[data-array="${i}"]`);
@@ -88,35 +87,66 @@ const game = (function() {
   let _gameboard = new Array(9);
   let _gameOn = true;
 
-
   // instantiate player / AI
   const humanPlayer = Player();
+  humanPlayer.setPlayStatus(true);
   const cpuPlayer = Player();
 
   const getGameStats = () => _gameOn;
 
   const setUnit = (position, sign) =>{
-    // avoids overwritting non empty array
-    if (_gameboard[position] !== undefined) return;
     _gameboard[position] = sign;
   };  
 
-  const play = (position, sign) => {
-    //debug
-    console.log('notgamestats: ', game.getGameStats(), 'not playstats', !humanPlayer.getPlayStatus());
-    if (!game.getGameStats() || !humanPlayer.getPlayStatus()) return;      
+  const getUnit = (position) =>{
+    return _gameboard[position];
+  };
+
+
+  const evaluateRound = (position, sign) => {        
+    // doesn't play if not suposed to 
+    if (!game.getGameStats()) return;        
+
+    //play
     setUnit(position, sign)
+
+    // activate/deactivate players based on current round
+    if(humanPlayer.getPlayStatus()){
+      humanPlayer.setPlayStatus(false);
+      cpuPlayer.setPlayStatus(true);
+    } else if (cpuPlayer.getPlayStatus()) {
+      cpuPlayer.setPlayStatus(false);
+      humanPlayer.setPlayStatus(true);
+    } else console.log('somethin\'gs wrong, I can feel it....');
+
     // update before proceding back
     dQuery.updateBoardCSS();
     if(game.validateWinner(_gameboard.indexOf(sign), sign)) setWinner(sign);
-    humanPlayer.setPlayStatus(false);
-    cpuPlayer.setPlayStatus(true);
+    game.cpuPlayer.getPlayStatus()?   cpuPlay() : false;
   }
 
-  const getUnit = (position) => {/* 
-    console.log(_gameboard[position]); */
-    return _gameboard[position];
-  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const getBoard = () => _gameboard;
 
@@ -161,6 +191,7 @@ const game = (function() {
 
   const setWinner = (sign) => {
     _gameOn = false;
+    cpuPlayer.setPlayStatus(false);
     if (humanPlayer.getSign() === sign) {
       alert(humanPlayer.getSign() + ' has won');
       resetGame();
@@ -170,15 +201,11 @@ const game = (function() {
       } else console.log ('Something\'s wrong, I can feel it');
   };
 
-  const evaluate = (player) => {
+  const debugPlayer = (player) => {
     console.log('current game state: ' + getGameStats());
     console.log('current play stats: '+ player.getPlayStatus());
     console.log('is winner? ' + player.isWinner());
-
-
   }
-  evaluate(humanPlayer);
-  evaluate(cpuPlayer);
 
   const resetGame = () => {
     resetBoardArray();
@@ -189,37 +216,34 @@ const game = (function() {
     humanPlayer.setPlayStatus(); 
   };
 
-
-
   return {
-      play, setUnit, getUnit, resetBoardArray, humanPlayer, cpuPlayer, getBoard,
+      evaluateRound, setUnit, getUnit, resetBoardArray, humanPlayer, cpuPlayer, getBoard,
       getRound, getGameboardLength, validateWinner, 
-      setWinner, getGameStats, resetGame, evaluate,
+      setWinner, getGameStats, resetGame, debugPlayer, 
     }
 })();
 
 // simulating AI play to test the game
-cpuPlay = function() {
+const cpuPlay = function() {
 
-  let myRandom = () => {
-    // *9 to avoid returning position higher than 8
-    return (Math.floor(Math.random()*9));
-  }  
+  // doesn't play if it's not suposed to
+  if (!game.getGameStats()) return; 
 
   //avoids infinite recursion
-  if(game.getGameboardLength() >= 8) return;
+  if(game.getGameboardLength() >= 9) return;
 
+  // only play if it's my turn
   if(!game.cpuPlayer.getPlayStatus()) return;
-  let AIturn = myRandom();
-  board = game.getBoard();
 
-  // avoids overwritting
-  if(game.getUnit(AIturn) === undefined) {
-    game.setUnit(AIturn, game.cpuPlayer.getSign());
-    dQuery.updateBoardCSS();
-    game.cpuPlayer.setPlayStatus(false);
-    game.humanPlayer.setPlayStatus(true);
-  } else cpuPlay();
-};
-
+  // *9 to avoid returning position higher than 8
+  let myRandom = () => rand = (Math.floor(Math.random()*9));
+  
+  let cpuTurn = myRandom();
+  
+  while (game.getUnit(cpuTurn) !== undefined) {
+    cpuTurn = myRandom();
+    console.log(cpuTurn);
+  };
+  game.evaluateRound(cpuTurn, game.cpuPlayer.getSign());  
+}
 
