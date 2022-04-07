@@ -10,7 +10,6 @@ const dQuery = (function(){
     game.humanPlayer.setSign(xSelector.textContent);
     game.cpuPlayer.setSign(oSelector.textContent);
   });
-
   oSelector.addEventListener("click", () => {
     game.humanPlayer.setSign(oSelector.textContent);
     game.cpuPlayer.setSign(xSelector.textContent);
@@ -20,17 +19,14 @@ const dQuery = (function(){
   gameUnitContainer.forEach((unit) => 
     unit.addEventListener('click', () => {
       //only play one round;
-      if (game.humanPlayer.getPlayStatus() !== true) return;
+      if (!game.humanPlayer.getPlayStatus()) return;
 
       //avoids overwritting
       if (unit.firstChild.textContent !== '') return;
-
-      unit.firstChild.textContent = game.humanPlayer.getSign();
-      unit.firstChild.setAttribute("class", `gameUnit gameUnit${game.humanPlayer.getSign()}`);
-      game.play((unit.dataset.array), game.humanPlayer.getSign());
-      //avoids infinite recursion
-      if(game.getGameboardLength() >= 8) return;
-      cpuPlay();
+      let sign = game.humanPlayer.getSign();
+      unit.firstChild.textContent = sign;
+      unit.firstChild.setAttribute("class", `gameUnit gameUnit${sign}`);
+      game.play((unit.dataset.array), sign);
   })
 );
 
@@ -78,11 +74,11 @@ const Player = () => {
     _currentlyPlaying? _currentlyPlaying = false : _currentlyPlaying = true;
   }
   const getPlayStatus = () =>  _currentlyPlaying;
-  const setWinner = () => _winningStatus = true;
+  const setWinner = (status) => _winningStatus = status;
   const isWinner = () => _winningStatus;
 
   return {
-    setSign, getSign, reset, setName, getName, getPlayStatus, 
+    setSign, getSign, reset, getPlayStatus, 
     setPlayStatus, isWinner, setWinner,
   }; 
 }
@@ -116,8 +112,6 @@ const game = (function() {
     if(game.validateWinner(_gameboard.indexOf(sign), sign)) setWinner(sign);
     humanPlayer.setPlayStatus(false);
     cpuPlayer.setPlayStatus(true);
-    console.log(cpuPlayer.getPlayStatus());
-    console.log('fuck');
   }
 
   const getUnit = (position) => {/* 
@@ -180,7 +174,8 @@ const game = (function() {
   const evaluate = (player) => {
     console.log('current game state: ' + getGameStats());
     console.log('current play stats: '+ player.getPlayStatus());
-    console.log()
+    console.log('is winner? ' + player.isWinner());
+
 
   }
   evaluate(humanPlayer);
@@ -189,9 +184,10 @@ const game = (function() {
   const resetGame = () => {
     resetBoardArray();
     dQuery.resetBoardCSS();
-    _currentlyPlaying = true;
-    _winningStatus = false; 
     _gameOn = true;
+    humanPlayer.setWinner(false); 
+    cpuPlayer.setWinner(false);
+    humanPlayer.setPlayStatus(); 
   };
 
 
@@ -205,9 +201,12 @@ const game = (function() {
 
 // simulating AI play to test the game
 cpuPlay = function() {
+  //avoids infinite recursion
+  if(game.getGameboardLength() >= 8) return;
+
   if(!game.cpuPlayer.getPlayStatus()) return;
   let AIturn = game.myRandom();
-  board = game.getBoard;
+  board = game.getBoard();
   
   // avoids overwritting
   if(game.getUnit(AIturn) === undefined) {
