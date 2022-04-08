@@ -11,20 +11,26 @@ const placar = (xWin, drawTimes, oWin) => {
   placar.style.marginRight = '3vw';  
   placar.style.marginBottom = '4vh';
   placar.style.marginTop = '4vh';
-  placar.style.background = 'orange';
-
+  placar.style.background = '#FBBF24';
+  
 
   const xPlacar = document.createElement('div');
-  xPlacar.textContent = 'X: 12 wins';
+  xPlacar.style.color = 'transparent';
+  xPlacar.style.textShadow = '0 0 0 #EF4444';
+  xPlacar.textContent = `❌: ${xWin} wins`
 
   const oPlacar = document.createElement('div');
-  oPlacar.textContent = 'O: 12 wins';
+  oPlacar.style.color = 'transparent';
+  oPlacar.style.textShadow = '0 0 0 #0EA5E9';
+  oPlacar.textContent = `⭕: ${oWin} wins`
 
   const drawPlacar = document.createElement('div');
-  drawPlacar.textContent = 'Draw: 2 times';
+  drawPlacar.style.color = 'transparent';
+  drawPlacar.style.textShadow = '0 0 0 #65A30D';  
+  drawPlacar.textContent = `Draw: ${drawTimes} times`
 
   placar.appendChild(xPlacar);
   placar.appendChild(drawPlacar);
   placar.appendChild(oPlacar);
-  
+
 }
