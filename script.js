@@ -129,9 +129,17 @@ const game = (function() {
     game.cpuPlayer.getPlayStatus()?   cpuPlay() : false;
     
     if(game.validateWinner(position, sign)) {
-      console.log('ME FODE')
+      console.log('validate winner')
       setWinner(sign);
     };
+    if(getGameboardLength() === 9 ) getDraw();
+  };
+
+  const getDraw = () => {
+    humanPlayer.isWinner(false);
+    cpuPlayer.isWinner(false);
+    console.log(humanPlayer.isWinner(), cpuPlayer.isWinner());
+
   }
 
   const getBoard = () => _gameboard;
@@ -153,7 +161,6 @@ const game = (function() {
     }))
     return (count.length);
   };
-
 
   // check winning conditions after every round 
   const validateWinner = (index, sign) => {
@@ -184,9 +191,6 @@ const game = (function() {
     // some checks the array and return true if the item contains the winning index
     // every returns true if every combination found on the array matches the winning array 
     .some((possibleCombination) => possibleCombination.every((index) => game.getUnit(index) === sign));  
-
-
-
   }
 
   const setWinner = (sign) => {

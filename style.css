@@ -30,8 +30,8 @@ img:hover {
     height: 100vh;
 }
 .header {
-/*   height: 15vh;
- */  height: 30vh;
+  height: 30vh;
+  display: flex;
 }
 .roundSelection {
   background: green;
@@ -77,6 +77,9 @@ img:hover {
 .gameUnitO {
     color: var(--OColor);
 }
+#X, #O {
+  font-size: 5rem;
+}
 /* animations */
 @keyframes fadeInAnimation {
     0% {
@@ -94,4 +97,3 @@ img:hover {
         filter: blur(0);
      }
 }
-
