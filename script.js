@@ -71,17 +71,13 @@ const Player = () => {
 
   const setPlayStatus = (stats) => _currentlyPlaying = stats;
 
-  const setWinner = (status) => _winningStatus = status;
-
   const getPlayStatus = () =>  _currentlyPlaying;
-
-  const isWinner = () => _winningStatus;
 
   const getSign = () => _sign;
 
   return {
     setSign, getSign, getPlayStatus, 
-    setPlayStatus, isWinner, setWinner,
+    setPlayStatus,
   }; 
 }
 
@@ -101,8 +97,6 @@ const game = (function() {
   const setUnit = (position, sign) => _gameboard[position] = sign;  
 
   const setDraw = () => {
-    humanPlayer.isWinner(false);
-    cpuPlayer.isWinner(false);
     alert('Draw!');
     resetGame();
   }
@@ -121,7 +115,7 @@ const game = (function() {
     if (!game.getGameStats()) return;        
     
     //play and update
-    setUnit(position, sign)
+    setUnit(position, sign);
     dQuery.updateBoardCSS();
 
     // activate/deactivate players based on current round
@@ -131,20 +125,19 @@ const game = (function() {
     } else if (cpuPlayer.getPlayStatus()) {
       cpuPlayer.setPlayStatus(false);
       humanPlayer.setPlayStatus(true);
-    } 
+    } ;
 
     //verify winner/draw after every play
-    if(game.validateWinner(position, sign)) setWinner(sign);
+    if(validateWinner(position, sign)) setWinner(sign);
     if(getGameboardLength() === 9 ) setDraw();
 
     //calls bot to play
-    game.cpuPlayer.getPlayStatus()?   cpuPlay() : false;
-    
+    game.cpuPlayer.getPlayStatus()?   cpuPlay() : false;    
   };
 
   const validateWinner = (index, sign) => {
     
-    // combinations of indexes for each sign that result in a win
+    // positions that win the game
     const winArray = [
       [0, 4, 8], 
       [2, 4, 6],
@@ -158,29 +151,31 @@ const game = (function() {
 
     return winArray
     // returns possible winning conditions
-    .filter((combination) => combination.includes(index))
-    // some checks the array and return true if the item contains the winning index
-    // every returns true if every combination found on the array matches the winning array 
-    .some((possibleCombination) => possibleCombination.every((index) => game.getUnit(index) === sign));  
+    .filter((comb) => comb.includes(index))
+    // some return true if the item contains the winning combination
+    // every returns true only if every combination found on the array matches the winning array 
+    .some((possibleComb) => possibleComb.every((index) => game.getUnit(index) === sign));  
   }
 
   const setWinner = (sign) => {
+
     _gameOn = false;
+
     cpuPlayer.setPlayStatus(false);
-    if (humanPlayer.getSign() === sign) {
+
+    if (humanPlayer.getSign() === sign) {      
       alert(humanPlayer.getSign() + ' has won');
       resetGame();
+
     } else if (cpuPlayer.getSign() === sign) {
         alert(cpuPlayer.getSign() + ' has won');
         resetGame();
-      }
+      };
   };
 
   const resetGame = () => {
     resetBoardArray();
     dQuery.resetBoardCSS();
-    humanPlayer.setWinner(false); 
-    cpuPlayer.setWinner(false);
     _gameOn = true;
     cpuPlayer.setPlayStatus(false);
     humanPlayer.setPlayStatus(true);
@@ -195,8 +190,8 @@ const game = (function() {
   const getBoard = () => _gameboard;
 
   return {
-      evaluateRound, setUnit, getUnit, resetBoardArray, humanPlayer, cpuPlayer, getBoard,
-      getGameboardLength, validateWinner, 
+      evaluateRound, setUnit, getUnit, humanPlayer, cpuPlayer, getBoard,
+      getGameboardLength,
       setWinner, getGameStats, resetGame,
     }
 
