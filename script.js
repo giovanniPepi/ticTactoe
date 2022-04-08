@@ -119,9 +119,10 @@ const game = (function() {
   const evaluateRound = (position, sign) => {     
     // stop on boolean
     if (!game.getGameStats()) return;        
-
-    //play
+    
+    //play and update
     setUnit(position, sign)
+    dQuery.updateBoardCSS();
 
     // activate/deactivate players based on current round
     if(humanPlayer.getPlayStatus()){
@@ -133,13 +134,11 @@ const game = (function() {
     } 
     game.cpuPlayer.getPlayStatus()?   cpuPlay() : false;
     
-    if(game.validateWinner(position, sign)) {
-      setWinner(sign);
-    };
+    //verify winner/draw after every play
+    if(game.validateWinner(position, sign)) setWinner(sign);
     if(getGameboardLength() === 9 ) setDraw();
   };
 
-  // check winning conditions after every round 
   const validateWinner = (index, sign) => {
     
     // combinations of indexes for each sign that result in a win
@@ -221,7 +220,6 @@ const cpuPlay = function() {
     cpuTurn = myRandom();
   };
   game.evaluateRound(parseInt(cpuTurn), game.cpuPlayer.getSign()); 
-  dQuery.updateBoardCSS();
 }
 
 
