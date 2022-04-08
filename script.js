@@ -5,7 +5,7 @@ const dQuery = (function(){
   const xSelector = document.querySelector("#X");
   const oSelector = document.querySelector("#O");
   
-  //sets the sign for each player
+  //sets the sign for both 
   xSelector.addEventListener("click", () => {
     game.humanPlayer.setSign(xSelector.textContent);
     game.cpuPlayer.setSign(oSelector.textContent);
@@ -15,21 +15,21 @@ const dQuery = (function(){
     game.cpuPlayer.setSign(xSelector.textContent);
   })
 
-  //listen for clicks on the gameboard array and sets the sign/CSS on them
+  // activate game on click
   gameUnitContainer.forEach((unit) => 
     unit.addEventListener('click', () => {
-      let teste = unit.firstChild;
+
+      let block = unit.firstChild;
 
       //stop until right conditions are met
       if(game.humanPlayer.getSign() === undefined || game.cpuPlayer.getSign() === undefined) return;
       if (!game.humanPlayer.getPlayStatus()) return;
-      if (teste.textContent !== '') return;
+      if (block.textContent !== '') return;
 
       let sign = game.humanPlayer.getSign();
-      teste.textContent = sign;
-      teste.setAttribute("class", `gameUnit gameUnit${sign}`);
+      block.textContent = sign;
+      block.setAttribute("class", `gameUnit gameUnit${sign}`);
       game.evaluateRound((unit.dataset.array), sign);
-
   })
 );
 
@@ -51,7 +51,7 @@ const dQuery = (function(){
   } 
   
   return {
-    gameUnitContainer, gameUnit, updateBoardCSS, resetBoardCSS,
+    gameUnitContainer, updateBoardCSS, resetBoardCSS,
   }
 })();
 
