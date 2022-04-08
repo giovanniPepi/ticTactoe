@@ -34,11 +34,13 @@ const dQuery = (function(){
 );
 
   const updateBoardCSS = () => {
+
     gameArray = game.getBoard();
+
     for (let i = 0; i < 9; i++){
-      let toWrite = document.querySelector(`[data-array="${i}"]`);
-      toWrite.firstChild.setAttribute("class", `gameUnit gameUnit${gameArray[i]}`);
-      toWrite.firstChild.textContent = gameArray[i];     
+      let unit = document.querySelector(`[data-array="${i}"]`);
+      unit.firstChild.setAttribute("class", `gameUnit gameUnit${gameArray[i]}`);
+      unit.firstChild.textContent = gameArray[i];     
     }
   };
 
