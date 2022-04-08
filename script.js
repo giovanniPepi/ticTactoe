@@ -136,11 +136,10 @@ const game = (function() {
   };
 
   const getDraw = () => {
-
     humanPlayer.isWinner(false);
     cpuPlayer.isWinner(false);
-    console.log(humanPlayer.isWinner(), cpuPlayer.isWinner());
-
+    alert('Draw!');
+    resetGame();
   }
 
   const getBoard = () => _gameboard;
