@@ -29,7 +29,7 @@ const dQuery = (function(){
       let sign = game.humanPlayer.getSign();
       block.textContent = sign;
       block.setAttribute("class", `gameUnit gameUnit${sign}`);
-      game.evaluateRound((unit.dataset.array), sign);
+      game.evaluateRound(parseInt((unit.dataset.array)), sign);
   })
 );
 
@@ -98,17 +98,26 @@ const game = (function() {
 
   const cpuPlayer = Player();
   
-
   const setUnit = (position, sign) => _gameboard[position] = sign;  
 
-  const getGameStats = () => _gameOn;
+  const setDraw = () => {
+    humanPlayer.isWinner(false);
+    cpuPlayer.isWinner(false);
+    alert('Draw!');
+    resetGame();
+  }
 
-  const getUnit = (position) => _gameboard[position];
+  const getGameboardLength = () => {
+    let count = [];
+    c = game.getBoard();
+    c.forEach((array => {
+      count.push(array);
+    }))
+    return (count.length);
+  };
 
-  const evaluateRound = (positionReceived, sign) => {        
-    let position = parseInt(positionReceived);
-
-    // doesn't play if not suposed to 
+  const evaluateRound = (position, sign) => {     
+    // stop on boolean
     if (!game.getGameStats()) return;        
 
     //play
@@ -128,29 +137,6 @@ const game = (function() {
       setWinner(sign);
     };
     if(getGameboardLength() === 9 ) setDraw();
-  };
-
-  const setDraw = () => {
-    humanPlayer.isWinner(false);
-    cpuPlayer.isWinner(false);
-    alert('Draw!');
-    resetGame();
-  }
-
-  const getBoard = () => _gameboard;
-
-  const resetBoardArray = () => {
-    _gameboard = new Array(9);
-  };
-
-  // gets gameboard length
-  const getGameboardLength = () => {
-    let count = [];
-    readArray = game.getBoard();
-    readArray.forEach((array => {
-      count.push(array);
-    }))
-    return (count.length);
   };
 
   // check winning conditions after every round 
@@ -198,6 +184,14 @@ const game = (function() {
     humanPlayer.setPlayStatus(true);
   };
 
+  const getGameStats = () => _gameOn;
+
+  const getUnit = (position) => _gameboard[position];
+
+
+  const resetBoardArray = () => _gameboard = new Array(9);
+
+  const getBoard = () => _gameboard;
 
   return {
       evaluateRound, setUnit, getUnit, resetBoardArray, humanPlayer, cpuPlayer, getBoard,
@@ -226,7 +220,7 @@ const cpuPlay = function() {
   while (game.getUnit(cpuTurn) !== undefined) {
     cpuTurn = myRandom();
   };
-  game.evaluateRound(cpuTurn, game.cpuPlayer.getSign()); 
+  game.evaluateRound(parseInt(cpuTurn), game.cpuPlayer.getSign()); 
   dQuery.updateBoardCSS();
 }
 
