@@ -200,19 +200,14 @@ const game = (function() {
 const cpuPlay = function() {
 
   // doesn't play if it's not suposed to
-  if (!game.getGameStats()) return; 
+   if(!game.cpuPlayer.getPlayStatus()) return;
 
-  //avoids infinite recursion
-  if(game.getGameboardLength() >= 9) return;
-
-  // only play if it's my turn
-  if(!game.cpuPlayer.getPlayStatus()) return;
-
-  // *9 to avoid returning position higher than 8
+  // *9 to return valid positions
   let myRandom = () => rand = (Math.floor(Math.random()*9));
   
   let cpuTurn = myRandom();
-  
+
+  // play until valid 
   while (game.getUnit(cpuTurn) !== undefined) {
     cpuTurn = myRandom();
   };
