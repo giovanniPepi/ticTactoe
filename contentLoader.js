@@ -1,7 +1,7 @@
 const placar = (xWin, drawTimes, oWin) => {
   // subtract height to stay at the same position
   const header = document.querySelector('.header');
-  header.style.height = '18.5vh';
+  header.style.height = '15.5vh';
 
   const placar = document.querySelector(".placar");
 
