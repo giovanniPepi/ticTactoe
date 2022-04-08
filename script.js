@@ -38,9 +38,9 @@ const dQuery = (function(){
     gameArray = game.getBoard();
 
     for (let i = 0; i < 9; i++){
-      let unit = document.querySelector(`[data-array="${i}"]`);
-      unit.firstChild.setAttribute("class", `gameUnit gameUnit${gameArray[i]}`);
-      unit.firstChild.textContent = gameArray[i];     
+      let a = document.querySelector(`[data-array="${i}"]`);
+      a.firstChild.setAttribute("class", `gameUnit gameUnit${gameArray[i]}`);
+      a.firstChild.textContent = gameArray[i];     
     }
   };
 
@@ -50,14 +50,15 @@ const dQuery = (function(){
       b.firstChild.setAttribute("class", "gameUnit");
       b.firstChild.textContent = '';
     }
-  } 
+  } ;
   
   return {
     gameUnitContainer, updateBoardCSS, resetBoardCSS,
   }
+
 })();
 
-// constructs a player;
+// constructor
 const Player = () => {
   let _sign;
   let _currentlyPlaying = false;
@@ -67,11 +68,9 @@ const Player = () => {
     //sanitizer, just in case
     if (sign === 'X' || sign === "O") _sign = sign;
   };
+
   const getSign = () => _sign;
-  const reset = () => {
-    _sign = '';
-    _name = '';
-  };
+
   const setPlayStatus = (stats) => {
     _currentlyPlaying = stats;
   }
@@ -80,7 +79,7 @@ const Player = () => {
   const isWinner = () => _winningStatus;
 
   return {
-    setSign, getSign, reset, getPlayStatus, 
+    setSign, getSign, getPlayStatus, 
     setPlayStatus, isWinner, updateWinner,
   }; 
 }
