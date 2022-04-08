@@ -1,7 +1,6 @@
 // handles DOM manipulation and listeners
 const dQuery = (function(){
   const gameUnitContainer = document.querySelectorAll(".gameUnitContainer");
-  const gameUnit = document.querySelectorAll(".gameUnit");
   const xSelector = document.querySelector("#X");
   const oSelector = document.querySelector("#O");
   
@@ -10,6 +9,7 @@ const dQuery = (function(){
     game.humanPlayer.setSign(xSelector.textContent);
     game.cpuPlayer.setSign(oSelector.textContent);
   });
+
   oSelector.addEventListener("click", () => {
     game.humanPlayer.setSign(oSelector.textContent);
     game.cpuPlayer.setSign(xSelector.textContent);
