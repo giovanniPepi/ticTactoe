@@ -6,13 +6,17 @@ const dQuery = (function(){
   
   //sets the sign for both 
   xSelector.addEventListener("click", () => {
-    game.humanPlayer.setSign(xSelector.textContent);
-    game.cpuPlayer.setSign(oSelector.textContent);
+    if(game.humanPlayer.getSign() === undefined) {
+      game.humanPlayer.setSign(xSelector.textContent);
+      game.cpuPlayer.setSign(oSelector.textContent);
+    }
   });
 
   oSelector.addEventListener("click", () => {
-    game.humanPlayer.setSign(oSelector.textContent);
-    game.cpuPlayer.setSign(xSelector.textContent);
+    if(game.humanPlayer.getSign() === undefined) {
+      game.humanPlayer.setSign(oSelector.textContent);
+      game.cpuPlayer.setSign(xSelector.textContent);
+    }
   })
 
   // activate game on click
@@ -63,11 +67,14 @@ const Player = () => {
   let _sign;
   let _currentlyPlaying = false;
   let _winningStatus = false; 
+  let _winCount = 0;
 
   const setSign = (sign) => {
     //sanitizer, just in case
     if (sign === 'X' || sign === "O") _sign = sign;
   };
+
+  const setWinCount = () => _winCount++;
 
   const setPlayStatus = (stats) => _currentlyPlaying = stats;
 
@@ -75,9 +82,11 @@ const Player = () => {
 
   const getSign = () => _sign;
 
+  const getWinCount = () => _winCount;
+
   return {
     setSign, getSign, getPlayStatus, 
-    setPlayStatus,
+    setPlayStatus, setWinCount, getWinCount,
   }; 
 }
 
@@ -86,6 +95,7 @@ const game = (function() {
 
   let _gameboard = new Array(9);
   let _gameOn = true;
+  let _drawCount = 0;
 
   //players
   const humanPlayer = Player();
@@ -97,7 +107,8 @@ const game = (function() {
   const setUnit = (position, sign) => _gameboard[position] = sign;  
 
   const setDraw = () => {
-    alert('Draw!');
+    _drawCount++;
+    alert('It\'s a draw! Total draw times: ' + _drawCount);
     resetGame();
   }
 
@@ -164,11 +175,13 @@ const game = (function() {
     cpuPlayer.setPlayStatus(false);
 
     if (humanPlayer.getSign() === sign) {      
-      alert(humanPlayer.getSign() + ' has won');
+      humanPlayer.setWinCount();
+      alert(humanPlayer.getSign() + ' has won! Total wins: ' + humanPlayer.getWinCount() + ' times');
       resetGame();
 
     } else if (cpuPlayer.getSign() === sign) {
-        alert(cpuPlayer.getSign() + ' has won');
+      cpuPlayer.setWinCount();
+      alert(cpuPlayer.getSign() + ' has won! Total wins: ' + humanPlayer.getWinCount() + ' times');
         resetGame();
       };
   };
