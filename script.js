@@ -69,40 +69,41 @@ const Player = () => {
     if (sign === 'X' || sign === "O") _sign = sign;
   };
 
-  const getSign = () => _sign;
-
   const setPlayStatus = (stats) => _currentlyPlaying = stats;
-  
+
+  const setWinner = (status) => _winningStatus = status;
+
   const getPlayStatus = () =>  _currentlyPlaying;
-  
-  const updateWinner = (status) => _winningStatus = status;
+
   const isWinner = () => _winningStatus;
+
+  const getSign = () => _sign;
 
   return {
     setSign, getSign, getPlayStatus, 
-    setPlayStatus, isWinner, updateWinner,
+    setPlayStatus, isWinner, setWinner,
   }; 
 }
 
 //handles game logic
 const game = (function() {
+
   let _gameboard = new Array(9);
   let _gameOn = true;
 
-  // instantiate player / AI
+  //players
   const humanPlayer = Player();
+
   humanPlayer.setPlayStatus(true);
+
   const cpuPlayer = Player();
+  
+
+  const setUnit = (position, sign) => _gameboard[position] = sign;  
 
   const getGameStats = () => _gameOn;
 
-  const setUnit = (position, sign) =>{
-    _gameboard[position] = sign;
-  };  
-
-  const getUnit = (position) =>{
-    return _gameboard[position];
-  };
+  const getUnit = (position) => _gameboard[position];
 
   const evaluateRound = (positionReceived, sign) => {        
     let position = parseInt(positionReceived);
@@ -126,10 +127,10 @@ const game = (function() {
     if(game.validateWinner(position, sign)) {
       setWinner(sign);
     };
-    if(getGameboardLength() === 9 ) getDraw();
+    if(getGameboardLength() === 9 ) setDraw();
   };
 
-  const getDraw = () => {
+  const setDraw = () => {
     humanPlayer.isWinner(false);
     cpuPlayer.isWinner(false);
     alert('Draw!');
@@ -190,8 +191,8 @@ const game = (function() {
   const resetGame = () => {
     resetBoardArray();
     dQuery.resetBoardCSS();
-    humanPlayer.updateWinner(false); 
-    cpuPlayer.updateWinner(false);
+    humanPlayer.setWinner(false); 
+    cpuPlayer.setWinner(false);
     _gameOn = true;
     cpuPlayer.setPlayStatus(false);
     humanPlayer.setPlayStatus(true);
