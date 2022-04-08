@@ -18,7 +18,6 @@ const dQuery = (function(){
   //listen for clicks on the gameboard array and sets the sign/CSS on them
   gameUnitContainer.forEach((unit) => 
     unit.addEventListener('click', () => {
-      console.log('listener começo');
 
       //waits for sign selection
       if(game.humanPlayer.getSign() === undefined || game.cpuPlayer.getSign() === undefined) return;
@@ -33,7 +32,6 @@ const dQuery = (function(){
       unit.firstChild.setAttribute("class", `gameUnit gameUnit${sign}`);
       game.evaluateRound((unit.dataset.array), sign);
 
-      console.log('listener fim1');
   })
 );
 
@@ -68,7 +66,6 @@ const Player = () => {
   const setSign = (sign) => {
     caps = sign.toUpperCase();
     if (caps === 'X' || caps === "O") _sign = caps;
-    else console.log('invalid sign');
   };
   const getSign = () => _sign;
   const reset = () => {
@@ -125,11 +122,10 @@ const game = (function() {
     } else if (cpuPlayer.getPlayStatus()) {
       cpuPlayer.setPlayStatus(false);
       humanPlayer.setPlayStatus(true);
-    } else console.log('somethin\'gs wrong, I can feel it....');
+    } 
     game.cpuPlayer.getPlayStatus()?   cpuPlay() : false;
     
     if(game.validateWinner(position, sign)) {
-      console.log('validate winner')
       setWinner(sign);
     };
     if(getGameboardLength() === 9 ) getDraw();
@@ -147,10 +143,6 @@ const game = (function() {
   const resetBoardArray = () => {
     _gameboard = new Array(9);
   };
-
-  const getRound = () => {
-    console.log(humanPlayer.getSign(), cpuPlayer.getSign());
-  }
 
   // gets gameboard length
   const getGameboardLength = () => {
@@ -177,14 +169,6 @@ const game = (function() {
       [6, 3, 0],
     ];  
 
-    console.log('validate winner ativou com ' + index + sign + 'tipo de index' + typeof(index) + 'tipo de sign ' + typeof(sign));
-    console.log("Resultado da função mapeadora é " + (winArray
-    // returns possible winning conditions
-    .filter((combination) => combination.includes(index))
-    // some checks the array and return true if the item contains the winning index
-    // every returns true if every combination found on the array matches the winning array 
-    .some((possibleCombination) => possibleCombination.every((index) => game.getUnit(index) === sign))));
-    
     return winArray
     // returns possible winning conditions
     .filter((combination) => combination.includes(index))
@@ -194,7 +178,6 @@ const game = (function() {
   }
 
   const setWinner = (sign) => {
-    console.log('setwinner ativou');
     _gameOn = false;
     cpuPlayer.setPlayStatus(false);
     if (humanPlayer.getSign() === sign) {
@@ -203,17 +186,10 @@ const game = (function() {
     } else if (cpuPlayer.getSign() === sign) {
         alert(cpuPlayer.getSign() + ' has won');
         resetGame();
-      } else console.log ('Something\'s wrong, I can feel it');
+      }
   };
 
-  const debugPlayer = (player) => {
-    console.log('current game state: ' + getGameStats());
-    console.log('current play stats: '+ player.getPlayStatus());
-    console.log('is winner? ' + player.isWinner());
-  }
-
   const resetGame = () => {
-
     resetBoardArray();
     dQuery.resetBoardCSS();
     humanPlayer.updateWinner(false); 
@@ -221,24 +197,18 @@ const game = (function() {
     _gameOn = true;
     cpuPlayer.setPlayStatus(false);
     humanPlayer.setPlayStatus(true);
-    console.log('RESETEEd');
-
-
-/*       /// nuclear
-      window.location.reload() */
   };
 
 
   return {
       evaluateRound, setUnit, getUnit, resetBoardArray, humanPlayer, cpuPlayer, getBoard,
-      getRound, getGameboardLength, validateWinner, 
-      setWinner, getGameStats, resetGame, debugPlayer,
+      getGameboardLength, validateWinner, 
+      setWinner, getGameStats, resetGame,
     }
 })();
 
 // simulating AI play to test the game
 const cpuPlay = function() {
-  console.log('cpu player ativou');
 
   // doesn't play if it's not suposed to
   if (!game.getGameStats()) return; 

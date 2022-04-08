@@ -127,8 +127,15 @@ const test = (() => {
     winCount = [];
   }
 
+  const debugPlayer = (player) => {
+    console.log('current game state: ' + game.getGameStats());
+    console.log('current play stats: '+ player.getPlayStatus());
+    console.log('is winner? ' + player.isWinner());
+  }
+
+
   return {
-    testO, testX, 
+    testO, testX, debugPlayer,
   }
 
 })();
