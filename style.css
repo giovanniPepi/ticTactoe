@@ -1,14 +1,15 @@
-body * {
-    border: .1px solid red;
-}
 :root {
     font-family: 'GidolinyaRegular';
     font-weight: normal;
     font-style: normal; 
+    background: #F5F5F4;
+    color: #44403C;
     --board: #78716C;
     --board2: #A8A29E;
     --XColor: #EF4444;
     --OColor: #0EA5E9;
+    --background2: #D6D3D1;
+    --grid: #1C1917;
     font-size: calc(.5vw + 1.5vh + 10px);
     --fontSmall: calc(.5vw + 1.5vh + 8px);
     --fontBig: calc(.5vw + 1.5vh + 15px);
@@ -30,7 +31,7 @@ img:hover {
     height: 100vh;
 }
 .header {
-  height: 35vh;
+  height: 30vh;
   display: flex;
   justify-content: space-around;
   align-content: center;
@@ -71,6 +72,7 @@ img:hover {
     justify-content: center;
     font-size: 5rem;
     display: flex;
+    border: .5px solid var(--grid);
 }
 .gameUnitContainer {
     transition: font-size ease-in;
@@ -88,13 +90,28 @@ img:hover {
 .gameUnitO {
     color: var(--OColor);
 }
+.reset {
+  background: var(--background2);
+  border: 2px solid var(--grid);
+  font-weight: bold;
+  padding: .4rem;
+  border-radius: 50% 5%;
+  transition: transform .5s cubic-bezier(.6,-0.28,.74,.05);  
+}
+.reset:hover {
+  transform: scale(1.15);
+}
+#wise {
+  font-size: 2rem;
+}
+
 /* animations */
 @keyframes fadeInAnimation {
     0% {
         opacity: 0;
-        -webkit-transform: scale(3);
+        -webkit-transform: scale(5);
         -webkit-filter: blur(1.5rem);
-        transform: scale(3);
+        transform: scale(5);
         filter: blur(1.5rem);
     }
     100% {

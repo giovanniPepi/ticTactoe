@@ -4,12 +4,15 @@ const dQuery = (function(){
   const xSelector = document.querySelector("#X");
   const oSelector = document.querySelector("#O");
   const reset = document.querySelector(".reset");
+  const wise = document.querySelector("#wise");
+  const header = document.querySelector(".header");
   
   //sets the sign for both 
   xSelector.addEventListener("click", () => {
     if(game.humanPlayer.getSign() === undefined) {
       game.humanPlayer.setSign(xSelector.textContent);
       game.cpuPlayer.setSign(oSelector.textContent);
+      header.removeChild(wise);
     }
   });
 
@@ -17,6 +20,7 @@ const dQuery = (function(){
     if(game.humanPlayer.getSign() === undefined) {
       game.humanPlayer.setSign(oSelector.textContent);
       game.cpuPlayer.setSign(xSelector.textContent);
+      header.removeChild(wise);
     }
   })
 

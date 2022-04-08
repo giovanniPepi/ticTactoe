@@ -1,7 +1,7 @@
 const placar = (xWin, drawTimes, oWin) => {
   // subtract height to stay at the same position
   const header = document.querySelector('.header');
-  header.style.height = '23.5vh';
+  header.style.height = '18.5vh';
 
   const placar = document.querySelector(".placar");
 
@@ -13,7 +13,6 @@ const placar = (xWin, drawTimes, oWin) => {
   placar.style.marginTop = '4vh';
   placar.style.background = '#FBBF24';
   
-
   const xPlacar = document.createElement('div');
   xPlacar.style.color = 'transparent';
   xPlacar.style.textShadow = '0 0 0 #EF4444';
