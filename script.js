@@ -191,8 +191,7 @@ const game = (function() {
 
   return {
       evaluateRound, setUnit, getUnit, humanPlayer, cpuPlayer, getBoard,
-      getGameboardLength,
-      setWinner, getGameStats, resetGame,
+      getGameboardLength, getGameStats,
     }
 
 })();
