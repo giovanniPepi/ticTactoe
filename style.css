@@ -12,13 +12,13 @@ body * {
     font-size: calc(.5vw + 1.5vh + 10px);
     --fontSmall: calc(.5vw + 1.5vh + 8px);
     --fontBig: calc(.5vw + 1.5vh + 15px);
-    --unitSize: clamp(4rem, 19vw, 150px);
+    --unitSize: clamp(5rem, 19vw, 150px);
 }
 body {
     margin: 0;
 }   
 img { 
-    width: 5%;
+    width: 50%;
     transition: transform 1s cubic-bezier(0,.82,.24,1.55);  
 }
 img:hover {
@@ -30,11 +30,20 @@ img:hover {
     height: 100vh;
 }
 .header {
-  height: 30vh;
+  height: 28vh;
   display: flex;
+  justify-content: space-around;
+  align-content: center;
 }
 .roundSelection {
-  background: green;
+  align-self: center;
+  font-size: 5rem;
+}
+#X {
+  color: var(--XColor);
+}
+#O {
+  color: var(--OColor);
 }
 .gameboardContainer {
     padding: var(--gamePadding);
@@ -45,11 +54,13 @@ img:hover {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    padding: 1rem;
 }
 .footer {
     /* fill remaining space */
     flex: 1 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .gameUnitContainer {
     background: var(--board);
@@ -76,9 +87,6 @@ img:hover {
 }
 .gameUnitO {
     color: var(--OColor);
-}
-#X, #O {
-  font-size: 5rem;
 }
 /* animations */
 @keyframes fadeInAnimation {
