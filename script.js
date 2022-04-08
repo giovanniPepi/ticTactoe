@@ -71,10 +71,10 @@ const Player = () => {
 
   const getSign = () => _sign;
 
-  const setPlayStatus = (stats) => {
-    _currentlyPlaying = stats;
-  }
+  const setPlayStatus = (stats) => _currentlyPlaying = stats;
+  
   const getPlayStatus = () =>  _currentlyPlaying;
+  
   const updateWinner = (status) => _winningStatus = status;
   const isWinner = () => _winningStatus;
 
