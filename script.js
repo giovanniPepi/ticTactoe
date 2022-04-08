@@ -18,18 +18,16 @@ const dQuery = (function(){
   //listen for clicks on the gameboard array and sets the sign/CSS on them
   gameUnitContainer.forEach((unit) => 
     unit.addEventListener('click', () => {
+      let teste = unit.firstChild;
 
-      //waits for sign selection
+      //stop until right conditions are met
       if(game.humanPlayer.getSign() === undefined || game.cpuPlayer.getSign() === undefined) return;
-
-      //only play one round;
       if (!game.humanPlayer.getPlayStatus()) return;
+      if (teste.textContent !== '') return;
 
-      //avoids overwritting
-      if (unit.firstChild.textContent !== '') return;
       let sign = game.humanPlayer.getSign();
-      unit.firstChild.textContent = sign;
-      unit.firstChild.setAttribute("class", `gameUnit gameUnit${sign}`);
+      teste.textContent = sign;
+      teste.setAttribute("class", `gameUnit gameUnit${sign}`);
       game.evaluateRound((unit.dataset.array), sign);
 
   })
@@ -64,8 +62,8 @@ const Player = () => {
   let _winningStatus = false; 
 
   const setSign = (sign) => {
-    caps = sign.toUpperCase();
-    if (caps === 'X' || caps === "O") _sign = caps;
+    //sanitizer, just in case
+    if (sign === 'X' || sign === "O") _sign = sign;
   };
   const getSign = () => _sign;
   const reset = () => {
@@ -104,7 +102,6 @@ const game = (function() {
   const getUnit = (position) =>{
     return _gameboard[position];
   };
-
 
   const evaluateRound = (positionReceived, sign) => {        
     let position = parseInt(positionReceived);
