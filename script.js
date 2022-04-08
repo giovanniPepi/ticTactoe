@@ -3,6 +3,7 @@ const dQuery = (function(){
   const gameUnitContainer = document.querySelectorAll(".gameUnitContainer");
   const xSelector = document.querySelector("#X");
   const oSelector = document.querySelector("#O");
+  const reset = document.querySelector(".reset");
   
   //sets the sign for both 
   xSelector.addEventListener("click", () => {
@@ -18,6 +19,8 @@ const dQuery = (function(){
       game.cpuPlayer.setSign(xSelector.textContent);
     }
   })
+
+  reset.addEventListener('click', () => window.location.reload());
 
   // activate game on click
   gameUnitContainer.forEach((unit) => 
