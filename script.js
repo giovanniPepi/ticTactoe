@@ -33,7 +33,7 @@ const dQuery = (function(){
       unit.firstChild.setAttribute("class", `gameUnit gameUnit${sign}`);
       game.evaluateRound((unit.dataset.array), sign);
 
-      console.log('listener fim');
+      console.log('listener fim1');
   })
 );
 
@@ -75,8 +75,8 @@ const Player = () => {
     _sign = '';
     _name = '';
   };
-  const setPlayStatus = () => {
-    _currentlyPlaying? _currentlyPlaying = false : _currentlyPlaying = true;
+  const setPlayStatus = (stats) => {
+    _currentlyPlaying = stats;
   }
   const getPlayStatus = () =>  _currentlyPlaying;
   const updateWinner = (status) => _winningStatus = status;
@@ -136,6 +136,7 @@ const game = (function() {
   };
 
   const getDraw = () => {
+
     humanPlayer.isWinner(false);
     cpuPlayer.isWinner(false);
     console.log(humanPlayer.isWinner(), cpuPlayer.isWinner());
@@ -204,11 +205,6 @@ const game = (function() {
         alert(cpuPlayer.getSign() + ' has won');
         resetGame();
       } else console.log ('Something\'s wrong, I can feel it');
-
-
-      /// nuclear
-
-      window.location.reload()
   };
 
   const debugPlayer = (player) => {
@@ -218,24 +214,33 @@ const game = (function() {
   }
 
   const resetGame = () => {
+
     resetBoardArray();
     dQuery.resetBoardCSS();
-    _gameOn = true;
     humanPlayer.updateWinner(false); 
     cpuPlayer.updateWinner(false);
-    humanPlayer.setPlayStatus(); 
+    _gameOn = true;
+    cpuPlayer.setPlayStatus(false);
+    humanPlayer.setPlayStatus(true);
+    console.log('RESETEEd');
+
+
+/*       /// nuclear
+      window.location.reload() */
   };
+
 
   return {
       evaluateRound, setUnit, getUnit, resetBoardArray, humanPlayer, cpuPlayer, getBoard,
       getRound, getGameboardLength, validateWinner, 
-      setWinner, getGameStats, resetGame, debugPlayer, 
+      setWinner, getGameStats, resetGame, debugPlayer,
     }
 })();
 
 // simulating AI play to test the game
 const cpuPlay = function() {
   console.log('cpu player ativou');
+
   // doesn't play if it's not suposed to
   if (!game.getGameStats()) return; 
 

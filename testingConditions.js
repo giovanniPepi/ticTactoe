@@ -126,8 +126,9 @@ const test = (() => {
     //resets array before next test
     winCount = [];
   }
+
   return {
-    testO, testX,
+    testO, testX, 
   }
 
 })();
