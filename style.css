@@ -18,7 +18,7 @@ body {
     margin: 0;
 }   
 img { 
-    width: 50%;
+    width: 35%;
     transition: transform 1s cubic-bezier(0,.82,.24,1.55);  
 }
 img:hover {
@@ -30,7 +30,7 @@ img:hover {
     height: 100vh;
 }
 .header {
-  height: 28vh;
+  height: 35vh;
   display: flex;
   justify-content: space-around;
   align-content: center;
