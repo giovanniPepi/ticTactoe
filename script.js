@@ -132,11 +132,14 @@ const game = (function() {
       cpuPlayer.setPlayStatus(false);
       humanPlayer.setPlayStatus(true);
     } 
-    game.cpuPlayer.getPlayStatus()?   cpuPlay() : false;
-    
+
     //verify winner/draw after every play
     if(game.validateWinner(position, sign)) setWinner(sign);
     if(getGameboardLength() === 9 ) setDraw();
+
+    //calls bot to play
+    game.cpuPlayer.getPlayStatus()?   cpuPlay() : false;
+    
   };
 
   const validateWinner = (index, sign) => {
@@ -187,7 +190,6 @@ const game = (function() {
 
   const getUnit = (position) => _gameboard[position];
 
-
   const resetBoardArray = () => _gameboard = new Array(9);
 
   const getBoard = () => _gameboard;
@@ -197,6 +199,7 @@ const game = (function() {
       getGameboardLength, validateWinner, 
       setWinner, getGameStats, resetGame,
     }
+
 })();
 
 // simulating AI play to test the game
