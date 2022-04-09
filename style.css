@@ -38,6 +38,7 @@ img:hover {
 }
 .roundSelection {
   align-self: center;
+  text-align: center;
   font-size: 5rem;
 }
 #X {

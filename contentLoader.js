@@ -1,4 +1,5 @@
-const getPlacar = (xWin, drawTimes, oWin) => {
+const setPlacar = (xWin, tieTimes, oWin) => {
+
   // subtract height to stay at the same position
   const header = document.querySelector('.header');
   header.style.height = '0vh';
@@ -9,27 +10,72 @@ const getPlacar = (xWin, drawTimes, oWin) => {
   placar.style.justifyContent = 'space-around';
   placar.style.alignItems = "center";
   placar.style.height = "27vh";
-  placar.style.background = '#FBBF24';
-  
+
+  // delete current if exists
+  const testExisting = (() => {
+    const _items = document.querySelectorAll(".placarItem");
+    if (_items.length > 0) _items.forEach(item => placar.removeChild(item));
+  })();
+
   const xPlacar = document.createElement('div');
+  const xPlacarIcon = document.createElement('div');
+  const xPlacarScore = document.createElement('div');
+  xPlacar.setAttribute("class", "placarItem");
   xPlacar.style.color = 'transparent';
   xPlacar.style.textShadow = '0 0 0 #EF4444';
-  if (xWin === 0) xPlacar.textContent = `❌ `;
-  else xPlacar.textContent = `❌:  ${xWin} wins`;
+  xPlacar.style.display = 'flex';
+  xPlacar.style.flexDirection = 'column';
+  xPlacar.style.gap = '1rem';
+  xPlacar.style.justifyContent = 'center';
+  xPlacar.style.textAlign = 'center';
+  xPlacarIcon.textContent = `❌ `;
+  if (xWin === 0) xPlacarScore.textContent = '';
+  else if (xWin === 1) xPlacarScore.textContent = `${xWin} win`;
+  else if (xWin > 1) xPlacarScore.textContent = `${xWin} wins`;
 
+  xPlacar.appendChild(xPlacarIcon);
+  xPlacar.appendChild(xPlacarScore);
+  
   const oPlacar = document.createElement('div');
+  const oPlacarIcon = document.createElement('div');
+  const oPlacarScore = document.createElement('div');
+  oPlacar.setAttribute("class", "placarItem");
   oPlacar.style.color = 'transparent';
   oPlacar.style.textShadow = '0 0 0 #0EA5E9';
-  if (oWin === 0) oPlacar.textContent = `⭕ `;
-  else oPlacar.textContent = `⭕: ${oWin} wins`
+  oPlacar.style.display = 'flex';
+  oPlacar.style.flexDirection = 'column';
+  oPlacar.style.gap = '1rem';
+  oPlacar.style.justifyContent = 'center';
+  oPlacar.style.textAlign = 'center';
+  oPlacarIcon.textContent = `⭕ `;
+  if (oWin === 0) oPlacarScore.textContent = '';
+  else if (oWin === 1) oPlacarScore.textContent = `${oWin} win`;
+  else if (oWin > 1) oPlacarScore.textContent = `${oWin} wins`;
+  
+  oPlacar.appendChild(oPlacarIcon);
+  oPlacar.appendChild(oPlacarScore); 
 
-  const drawPlacar = document.createElement('div');
-  drawPlacar.style.color = 'transparent';
-  drawPlacar.style.textShadow = '0 0 0 #65A30D';  
-  if (drawTimes !== 0) drawPlacar.textContent = `Draw: ${drawTimes} times`;
+  const tiePlacar = document.createElement('div');
+  const tiePlacarIcon = document.createElement('div');
+  const tiePlacarScore = document.createElement('div');
+  tiePlacar.setAttribute("class", "placarItem");
+  tiePlacar.style.color = 'transparent';
+  tiePlacar.style.textShadow = '0 0 0 #65A30D';  
+  tiePlacar.style.display = 'flex';
+  tiePlacar.style.flexDirection = 'column';
+  tiePlacar.style.gap = '1rem';
+  tiePlacar.style.justifyContent = 'center';
+  tiePlacar.style.textAlign = 'center';
+  if (tieTimes !== 0) {
+    tiePlacarIcon.textContent = `Tie `;
+    if (tieTimes ===1) tiePlacarScore.textContent = `${tieTimes} time`;
+    else if (tieTimes > 1) tiePlacarScore.textContent = `${tieTimes} times`;      
+  }
+  tiePlacar.appendChild(tiePlacarIcon);
+  tiePlacar.appendChild(tiePlacarScore);
 
   placar.appendChild(xPlacar);
-  placar.appendChild(drawPlacar);
+  placar.appendChild(tiePlacar);
   placar.appendChild(oPlacar);
 
 }

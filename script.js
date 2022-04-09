@@ -13,7 +13,7 @@ const dQuery = (function(){
       game.humanPlayer.setSign(xSelector.textContent);
       game.cpuPlayer.setSign(oSelector.textContent);
       roundSelection.forEach(child => header.removeChild(child));
-      getPlacar(0, 0, 0);
+      setPlacar(0, 0, 0);
     }
   });
 
@@ -22,7 +22,7 @@ const dQuery = (function(){
       game.humanPlayer.setSign(oSelector.textContent);
       game.cpuPlayer.setSign(xSelector.textContent);
       roundSelection.forEach(child => header.removeChild(child));
-      getPlacar(0, 0, 0);
+      setPlacar(0, 0, 0);
     }
   })
 
@@ -195,6 +195,8 @@ const game = (function() {
   };
 
   const resetGame = () => {
+
+    /* setPlacar(2, 2, 2); */
     resetBoardArray();
     dQuery.resetBoardCSS();
     _gameOn = true;
