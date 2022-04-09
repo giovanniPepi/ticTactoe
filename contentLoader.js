@@ -9,7 +9,7 @@ const setPlacar = (xWin, tieTimes, oWin, choice) => {
   placar.style.display = 'flex';
   placar.style.justifyContent = 'space-around';
   placar.style.alignItems = "center";
-  placar.style.height = "27vh";
+  placar.style.height = "25vh";
 
   // delete current if exists
   const testExisting = (() => {

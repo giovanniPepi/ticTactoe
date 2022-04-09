@@ -31,7 +31,7 @@ img:hover {
     height: 100vh;
 }
 .header {
-  height: 27vh;
+  height: 25vh;
   display: flex;
   justify-content: space-around;
   align-content: center;
@@ -102,7 +102,9 @@ img:hover {
 .reset:hover {
   transform: scale(1.15);
 }
-#wise {
+.wise {
+  margin-top: .5rem;
+  text-align: center;
   font-size: 2rem;
 }
 
@@ -114,7 +116,7 @@ img:hover {
         -webkit-filter: blur(6rem);
         transform: scale(2);
         filter: blur(6rem);
-    }
+      }
     100% {
         opacity: 1;
         -webkit-transform: scale(1);

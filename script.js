@@ -5,6 +5,8 @@ const dQuery = (function(){
   const oSelector = document.querySelector("#O");
   const reset = document.querySelector(".reset");
   const roundSelection = document.querySelectorAll(".roundSelection");
+  const container = document.querySelector(".container");
+  const wise = document.querySelector(".wise");
   const header = document.querySelector(".header");
   
   //sets the sign for both, updates header
@@ -13,6 +15,7 @@ const dQuery = (function(){
       game.humanPlayer.setSign(xSelector.textContent);
       game.cpuPlayer.setSign(oSelector.textContent);
       roundSelection.forEach(child => header.removeChild(child));
+      container.removeChild(wise);
       setPlacar(0, 0, 0, 'X');
     }
   });
