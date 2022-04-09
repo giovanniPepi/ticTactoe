@@ -110,10 +110,10 @@ img:hover {
 @keyframes fadeInAnimation {
     0% {
         opacity: 0;
-        -webkit-transform: scale(5);
-        -webkit-filter: blur(1.5rem);
-        transform: scale(5);
-        filter: blur(1.5rem);
+        -webkit-transform: scale(2);
+        -webkit-filter: blur(6rem);
+        transform: scale(2);
+        filter: blur(6rem);
     }
     100% {
         opacity: 1;

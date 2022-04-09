@@ -13,7 +13,7 @@ const dQuery = (function(){
       game.humanPlayer.setSign(xSelector.textContent);
       game.cpuPlayer.setSign(oSelector.textContent);
       roundSelection.forEach(child => header.removeChild(child));
-      setPlacar(0, 0, 0);
+      setPlacar(0, 0, 0, 'X');
     }
   });
 
@@ -22,7 +22,7 @@ const dQuery = (function(){
       game.humanPlayer.setSign(oSelector.textContent);
       game.cpuPlayer.setSign(xSelector.textContent);
       roundSelection.forEach(child => header.removeChild(child));
-      setPlacar(0, 0, 0);
+      setPlacar(0, 0, 0, 'O');
     }
   })
 
@@ -199,8 +199,8 @@ const game = (function() {
   const resetGame = () => {
     
     const sanitizePlacarInput = (() => {
-      if (humanPlayer.getSign() === 'X') setPlacar(humanPlayer.getWinCount(), getDraw(), cpuPlayer.getWinCount());
-      else if (humanPlayer.getWinCount() === 'O') setPlacar(cpuPlayer.getWinCount(), getDraw(), humanPlayer.getWinCount());
+      if (humanPlayer.getSign() === 'X') setPlacar(humanPlayer.getWinCount(), getDraw(), cpuPlayer.getWinCount(), humanPlayer.getSign());
+      else if (humanPlayer.getSign() === 'O') setPlacar(cpuPlayer.getWinCount(), getDraw(), humanPlayer.getWinCount(), humanPlayer.getSign());
       else console.log('ferrou');
     })();
     resetBoardArray();

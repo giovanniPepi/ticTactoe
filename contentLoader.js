@@ -1,4 +1,4 @@
-const setPlacar = (xWin, tieTimes, oWin) => {
+const setPlacar = (xWin, tieTimes, oWin, choice) => {
 
   // subtract height to stay at the same position
   const header = document.querySelector('.header');
@@ -28,6 +28,9 @@ const setPlacar = (xWin, tieTimes, oWin) => {
   xPlacar.style.gap = '1rem';
   xPlacar.style.justifyContent = 'center';
   xPlacar.style.textAlign = 'center';
+  xPlacar.style.padding = '.5rem';;
+  xPlacar.style.borderRadius = "1rem";
+  if (choice == 'X') xPlacar.style.background = '#FECACA';
   xPlacarIcon.textContent = `❌ `;
   if (xWin === 0) xPlacarScore.textContent = '';
   else if (xWin === 1) xPlacarScore.textContent = `${xWin} win`;
@@ -47,6 +50,9 @@ const setPlacar = (xWin, tieTimes, oWin) => {
   oPlacar.style.gap = '1rem';
   oPlacar.style.justifyContent = 'center';
   oPlacar.style.textAlign = 'center';
+  oPlacar.style.padding = '.5rem';;
+  oPlacar.style.borderRadius = "1rem";
+  if (choice == 'O') oPlacar.style.background = "#BAE6FD";
   oPlacarIcon.textContent = `⭕ `;
   if (oWin === 0) oPlacarScore.textContent = '';
   else if (oWin === 1) oPlacarScore.textContent = `${oWin} win`;
