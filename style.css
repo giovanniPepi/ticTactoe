@@ -59,8 +59,10 @@ img:hover {
 }
 .footer {
     /* fill remaining space */
-    flex: 1 0 auto;
+/*     flex: 1 0 auto; */
     display: flex;
+    height: 10vh;
+    margin: 1.5rem;
     justify-content: center;
     align-items: center;
 }
