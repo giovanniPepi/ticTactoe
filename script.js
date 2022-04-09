@@ -3,17 +3,30 @@ const dQuery = (function(){
   const gameUnitContainer = document.querySelectorAll(".gameUnitContainer");
   const xSelector = document.querySelector("#X");
   const oSelector = document.querySelector("#O");
+  const reset = document.querySelector(".reset");
+  const roundSelection = document.querySelectorAll(".roundSelection");
+  const header = document.querySelector(".header");
   
-  //sets the sign for both 
+  //sets the sign for both, updates header
   xSelector.addEventListener("click", () => {
-    game.humanPlayer.setSign(xSelector.textContent);
-    game.cpuPlayer.setSign(oSelector.textContent);
+    if(game.humanPlayer.getSign() === undefined) {
+      game.humanPlayer.setSign(xSelector.textContent);
+      game.cpuPlayer.setSign(oSelector.textContent);
+      roundSelection.forEach(child => header.removeChild(child));
+      setPlacar(0, 0, 0, 'X');
+    }
   });
 
   oSelector.addEventListener("click", () => {
-    game.humanPlayer.setSign(oSelector.textContent);
-    game.cpuPlayer.setSign(xSelector.textContent);
+    if(game.humanPlayer.getSign() === undefined) {
+      game.humanPlayer.setSign(oSelector.textContent);
+      game.cpuPlayer.setSign(xSelector.textContent);
+      roundSelection.forEach(child => header.removeChild(child));
+      setPlacar(0, 0, 0, 'O');
+    }
   })
+
+  reset.addEventListener('click', () => window.location.reload());
 
   // activate game on click
   gameUnitContainer.forEach((unit) => 
@@ -62,12 +75,14 @@ const dQuery = (function(){
 const Player = () => {
   let _sign;
   let _currentlyPlaying = false;
-  let _winningStatus = false; 
+  let _winCount = 0;
 
   const setSign = (sign) => {
     //sanitizer, just in case
     if (sign === 'X' || sign === "O") _sign = sign;
   };
+
+  const setWinCount = () => _winCount++;
 
   const setPlayStatus = (stats) => _currentlyPlaying = stats;
 
@@ -75,9 +90,11 @@ const Player = () => {
 
   const getSign = () => _sign;
 
+  const getWinCount = () => _winCount;
+
   return {
     setSign, getSign, getPlayStatus, 
-    setPlayStatus,
+    setPlayStatus, setWinCount, getWinCount,
   }; 
 }
 
@@ -86,6 +103,7 @@ const game = (function() {
 
   let _gameboard = new Array(9);
   let _gameOn = true;
+  let _drawCount = 0;
 
   //players
   const humanPlayer = Player();
@@ -97,9 +115,12 @@ const game = (function() {
   const setUnit = (position, sign) => _gameboard[position] = sign;  
 
   const setDraw = () => {
-    alert('Draw!');
+    _drawCount++;
+    alert('It\'s a draw! Total draw times: ' + _drawCount);
     resetGame();
   }
+
+  const getDraw = () => _drawCount;
 
   const getGameboardLength = () => {
     let count = [];
@@ -164,16 +185,24 @@ const game = (function() {
     cpuPlayer.setPlayStatus(false);
 
     if (humanPlayer.getSign() === sign) {      
-      alert(humanPlayer.getSign() + ' has won');
+      humanPlayer.setWinCount();
+      alert(humanPlayer.getSign() + ' has won! Total wins: ' + humanPlayer.getWinCount() + ' times');
       resetGame();
 
     } else if (cpuPlayer.getSign() === sign) {
-        alert(cpuPlayer.getSign() + ' has won');
+      cpuPlayer.setWinCount();
+      alert(cpuPlayer.getSign() + ' has won! Total wins: ' + humanPlayer.getWinCount() + ' times');
         resetGame();
       };
   };
 
   const resetGame = () => {
+    
+    const sanitizePlacarInput = (() => {
+      if (humanPlayer.getSign() === 'X') setPlacar(humanPlayer.getWinCount(), getDraw(), cpuPlayer.getWinCount(), humanPlayer.getSign());
+      else if (humanPlayer.getSign() === 'O') setPlacar(cpuPlayer.getWinCount(), getDraw(), humanPlayer.getWinCount(), humanPlayer.getSign());
+      else console.log('ferrou');
+    })();
     resetBoardArray();
     dQuery.resetBoardCSS();
     _gameOn = true;
@@ -191,7 +220,7 @@ const game = (function() {
 
   return {
       evaluateRound, setUnit, getUnit, humanPlayer, cpuPlayer, getBoard,
-      getGameboardLength, getGameStats,
+      getGameboardLength, getGameStats, getDraw,
     }
 
 })();

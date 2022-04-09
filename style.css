@@ -1,24 +1,25 @@
-body * {
-    border: .1px solid red;
-}
 :root {
     font-family: 'GidolinyaRegular';
     font-weight: normal;
     font-style: normal; 
+    background: #F5F5F4;
+    color: #44403C;
     --board: #78716C;
     --board2: #A8A29E;
     --XColor: #EF4444;
     --OColor: #0EA5E9;
+    --background2: #D6D3D1;
+    --grid: #1C1917;
     font-size: calc(.5vw + 1.5vh + 10px);
     --fontSmall: calc(.5vw + 1.5vh + 8px);
     --fontBig: calc(.5vw + 1.5vh + 15px);
-    --unitSize: clamp(4rem, 19vw, 150px);
+    --unitSize: clamp(5rem, 19vw, 150px);
 }
 body {
     margin: 0;
 }   
 img { 
-    width: 5%;
+    width: 35%;
     transition: transform 1s cubic-bezier(0,.82,.24,1.55);  
 }
 img:hover {
@@ -30,11 +31,21 @@ img:hover {
     height: 100vh;
 }
 .header {
-  height: 30vh;
+  height: 27vh;
   display: flex;
+  justify-content: space-around;
+  align-content: center;
 }
 .roundSelection {
-  background: green;
+  align-self: center;
+  text-align: center;
+  font-size: 5rem;
+}
+#X {
+  color: var(--XColor);
+}
+#O {
+  color: var(--OColor);
 }
 .gameboardContainer {
     padding: var(--gamePadding);
@@ -45,11 +56,13 @@ img:hover {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    padding: 1rem;
 }
 .footer {
     /* fill remaining space */
     flex: 1 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .gameUnitContainer {
     background: var(--board);
@@ -60,6 +73,7 @@ img:hover {
     justify-content: center;
     font-size: 5rem;
     display: flex;
+    border: .5px solid var(--grid);
 }
 .gameUnitContainer {
     transition: font-size ease-in;
@@ -77,17 +91,29 @@ img:hover {
 .gameUnitO {
     color: var(--OColor);
 }
-#X, #O {
-  font-size: 5rem;
+.reset {
+  background: var(--background2);
+  border: 2px solid var(--grid);
+  font-weight: bold;
+  padding: .4rem;
+  border-radius: 50% 5%;
+  transition: transform .5s cubic-bezier(.6,-0.28,.74,.05);  
 }
+.reset:hover {
+  transform: scale(1.15);
+}
+#wise {
+  font-size: 2rem;
+}
+
 /* animations */
 @keyframes fadeInAnimation {
     0% {
         opacity: 0;
-        -webkit-transform: scale(3);
-        -webkit-filter: blur(1.5rem);
-        transform: scale(3);
-        filter: blur(1.5rem);
+        -webkit-transform: scale(2);
+        -webkit-filter: blur(6rem);
+        transform: scale(2);
+        filter: blur(6rem);
     }
     100% {
         opacity: 1;
