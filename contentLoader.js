@@ -1,16 +1,14 @@
-const placar = (xWin, drawTimes, oWin) => {
+const getPlacar = (xWin, drawTimes, oWin) => {
   // subtract height to stay at the same position
   const header = document.querySelector('.header');
-  header.style.height = '15.5vh';
+  header.style.height = '0vh';
 
   const placar = document.querySelector(".placar");
 
   placar.style.display = 'flex';
   placar.style.justifyContent = 'space-between';
-  placar.style.marginLeft = '3vw';
-  placar.style.marginRight = '3vw';  
-  placar.style.marginBottom = '4vh';
-  placar.style.marginTop = '4vh';
+  placar.style.alignItems = "center";
+  placar.style.height = "27vh";
   placar.style.background = '#FBBF24';
   
   const xPlacar = document.createElement('div');
@@ -31,5 +29,9 @@ const placar = (xWin, drawTimes, oWin) => {
   placar.appendChild(xPlacar);
   placar.appendChild(drawPlacar);
   placar.appendChild(oPlacar);
+
+}
+
+const updatePlacar = () => {
 
 }

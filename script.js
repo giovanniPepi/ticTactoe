@@ -4,15 +4,16 @@ const dQuery = (function(){
   const xSelector = document.querySelector("#X");
   const oSelector = document.querySelector("#O");
   const reset = document.querySelector(".reset");
-  const wise = document.querySelector("#wise");
+  const roundSelection = document.querySelectorAll(".roundSelection");
   const header = document.querySelector(".header");
   
-  //sets the sign for both 
+  //sets the sign for both, updates header
   xSelector.addEventListener("click", () => {
     if(game.humanPlayer.getSign() === undefined) {
       game.humanPlayer.setSign(xSelector.textContent);
       game.cpuPlayer.setSign(oSelector.textContent);
-      header.removeChild(wise);
+      roundSelection.forEach(child => header.removeChild(child));
+      getPlacar();
     }
   });
 
@@ -20,7 +21,8 @@ const dQuery = (function(){
     if(game.humanPlayer.getSign() === undefined) {
       game.humanPlayer.setSign(oSelector.textContent);
       game.cpuPlayer.setSign(xSelector.textContent);
-      header.removeChild(wise);
+      roundSelection.forEach(child => header.removeChild(child));
+      getPlacar();
     }
   })
 
