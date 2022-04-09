@@ -13,7 +13,7 @@ const dQuery = (function(){
       game.humanPlayer.setSign(xSelector.textContent);
       game.cpuPlayer.setSign(oSelector.textContent);
       roundSelection.forEach(child => header.removeChild(child));
-      getPlacar();
+      getPlacar(0, 0, 0);
     }
   });
 
@@ -22,7 +22,7 @@ const dQuery = (function(){
       game.humanPlayer.setSign(oSelector.textContent);
       game.cpuPlayer.setSign(xSelector.textContent);
       roundSelection.forEach(child => header.removeChild(child));
-      getPlacar();
+      getPlacar(0, 0, 0);
     }
   })
 
@@ -75,7 +75,6 @@ const dQuery = (function(){
 const Player = () => {
   let _sign;
   let _currentlyPlaying = false;
-  let _winningStatus = false; 
   let _winCount = 0;
 
   const setSign = (sign) => {
