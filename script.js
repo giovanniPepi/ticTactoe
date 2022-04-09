@@ -225,7 +225,7 @@ const game = (function() {
       evaluateRound, setUnit, getUnit, humanPlayer, cpuPlayer, getBoard,
       getGameboardLength, getGameStats, getDraw,
     }
-
+    
 })();
 
 // simulating AI play to test the game
