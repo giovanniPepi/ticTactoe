@@ -120,6 +120,8 @@ const game = (function() {
     resetGame();
   }
 
+  const getDraw = () => _drawCount;
+
   const getGameboardLength = () => {
     let count = [];
     c = game.getBoard();
@@ -195,8 +197,12 @@ const game = (function() {
   };
 
   const resetGame = () => {
-
-    /* setPlacar(2, 2, 2); */
+    
+    const sanitizePlacarInput = (() => {
+      if (humanPlayer.getSign() === 'X') setPlacar(humanPlayer.getWinCount(), getDraw(), cpuPlayer.getWinCount());
+      else if (humanPlayer.getWinCount() === 'O') setPlacar(cpuPlayer.getWinCount(), getDraw(), humanPlayer.getWinCount());
+      else console.log('ferrou');
+    })();
     resetBoardArray();
     dQuery.resetBoardCSS();
     _gameOn = true;
@@ -214,7 +220,7 @@ const game = (function() {
 
   return {
       evaluateRound, setUnit, getUnit, humanPlayer, cpuPlayer, getBoard,
-      getGameboardLength, getGameStats,
+      getGameboardLength, getGameStats, getDraw,
     }
 
 })();
