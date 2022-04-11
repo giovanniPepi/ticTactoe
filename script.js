@@ -14,6 +14,7 @@ const dQuery = (function(){
     if(game.humanPlayer.getSign() === undefined) {
       game.humanPlayer.setSign(xSelector.textContent);
       game.cpuPlayer.setSign(oSelector.textContent);
+      game.humanPlayer.setPlayStatus(true);
       roundSelection.forEach(child => header.removeChild(child));
       container.removeChild(wise);
       setPlacar(0, 0, 0, 'X');
@@ -24,6 +25,7 @@ const dQuery = (function(){
     if(game.humanPlayer.getSign() === undefined) {
       game.humanPlayer.setSign(oSelector.textContent);
       game.cpuPlayer.setSign(xSelector.textContent);
+      game.humanPlayer.setPlayStatus(true);
       roundSelection.forEach(child => header.removeChild(child));
       setPlacar(0, 0, 0, 'O');
     }
@@ -111,8 +113,6 @@ const game = (function() {
   //players
   const humanPlayer = Player();
 
-  humanPlayer.setPlayStatus(true);
-
   const cpuPlayer = Player();
   
   const setUnit = (position, sign) => _gameboard[position] = sign;  
@@ -185,8 +185,6 @@ const game = (function() {
 
     _gameOn = false;
 
-    cpuPlayer.setPlayStatus(false);
-
     if (humanPlayer.getSign() === sign) {      
       humanPlayer.setWinCount();
       alert(humanPlayer.getSign() + ' has won! Total wins: ' + humanPlayer.getWinCount() + ' times');
@@ -204,13 +202,21 @@ const game = (function() {
     const sanitizePlacarInput = (() => {
       if (humanPlayer.getSign() === 'X') setPlacar(humanPlayer.getWinCount(), getDraw(), cpuPlayer.getWinCount(), humanPlayer.getSign());
       else if (humanPlayer.getSign() === 'O') setPlacar(cpuPlayer.getWinCount(), getDraw(), humanPlayer.getWinCount(), humanPlayer.getSign());
-      else console.log('ferrou');
+      else console.log('something\'s wrong');11
     })();
+
     resetBoardArray();
     dQuery.resetBoardCSS();
+    // new game starts from who lost
+    if (cpuPlayer.getPlayStatus() === false) {
+      cpuPlayer.setPlayStatus(false);
+      humanPlayer.setPlayStatus(true);
+    } else {
+      cpuPlayer.setPlayStatus(true);
+      humanPlayer.setPlayStatus(false);
+    }
+    console.log('current game: cpu player: ' , cpuPlayer.getPlayStatus(), "human: ", humanPlayer.getPlayStatus());
     _gameOn = true;
-    cpuPlayer.setPlayStatus(false);
-    humanPlayer.setPlayStatus(true);
   };
 
   const getGameStats = () => _gameOn;
