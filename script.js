@@ -204,7 +204,7 @@ const game = (function() {
       else if (humanPlayer.getSign() === 'O') setPlacar(cpuPlayer.getWinCount(), getDraw(), humanPlayer.getWinCount(), humanPlayer.getSign());
       else console.log('something\'s wrong');11
     })();
-    
+
     resetBoardArray();
     dQuery.resetBoardCSS();
     // new game starts from who lost

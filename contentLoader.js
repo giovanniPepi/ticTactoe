@@ -21,6 +21,7 @@ const setPlacar = (xWin, tieTimes, oWin, choice) => {
   const xPlacar = document.createElement('div');
   const xPlacarIcon = document.createElement('div');
   const xPlacarScore = document.createElement('div');
+  
   xPlacar.setAttribute("class", "placarItem");
   xPlacar.style.color = 'transparent';
   xPlacar.style.textShadow = '0 0 0 #EF4444';
