@@ -7,10 +7,11 @@ const setPlacar = (xWin, tieTimes, oWin, choice) => {
   const placar = document.querySelector(".placar");
 
   placar.style.display = 'flex';
-  placar.style.justifyContent = 'space-around';
+  placar.style.justifyContent = 'center';
   placar.style.alignItems = "center";
-  placar.style.height = "25vh";
-  placar.style.fontSize = '1.2rem';
+  placar.style.height = "20vh";
+  placar.style.gap = "3rem";
+  placar.style.fontSize = '1.3rem';
 
   // delete current if exists
   const testExisting = (() => {
