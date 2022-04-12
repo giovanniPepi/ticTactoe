@@ -59,8 +59,8 @@ img:hover {
 }
 .footer {
     display: flex;
-    height: 11vh;
-    margin: 1.4rem;
+    height: 20vh;
+    margin-top: .5rem;
     justify-content: center;
     align-items: center;
 }
