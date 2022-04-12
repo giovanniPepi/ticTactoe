@@ -9,7 +9,7 @@ const setPlacar = (xWin, tieTimes, oWin, choice) => {
   placar.style.display = 'flex';
   placar.style.justifyContent = 'center';
   placar.style.alignItems = "center";
-  placar.style.height = "20vh";
+  placar.style.height = "19vh";
   placar.style.gap = "3rem";
   placar.style.fontSize = '1.3rem';
 
