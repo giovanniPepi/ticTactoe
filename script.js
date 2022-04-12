@@ -202,7 +202,6 @@ const game = (function() {
     const sanitizePlacarInput = (() => {
       if (humanPlayer.getSign() === 'X') setPlacar(humanPlayer.getWinCount(), getDraw(), cpuPlayer.getWinCount(), humanPlayer.getSign());
       else if (humanPlayer.getSign() === 'O') setPlacar(cpuPlayer.getWinCount(), getDraw(), humanPlayer.getWinCount(), humanPlayer.getSign());
-      else console.log('something\'s wrong');11
     })();
 
     resetBoardArray();
@@ -215,7 +214,6 @@ const game = (function() {
       cpuPlayer.setPlayStatus(true);
       humanPlayer.setPlayStatus(false);
     }
-    console.log('current game: cpu player: ' , cpuPlayer.getPlayStatus(), "human: ", humanPlayer.getPlayStatus());
     _gameOn = true;
   };
 
